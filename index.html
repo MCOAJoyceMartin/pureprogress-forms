@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PureProgress | Therapy Success Story Intake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #1D5F8A;
+    --brand-light: #E6F1FB;
+    --brand-mid: #378ADD;
+    --accent: #0F6E56;
+    --accent-light: #E1F5EE;
+    --warn: #BA7517;
+    --warn-light: #FAEEDA;
+    --danger: #A32D2D;
+    --danger-light: #FCEBEB;
+    --surface: #FFFFFF;
+    --surface2: #F8F9FA;
+    --surface3: #F1EFE8;
+    --border: #D3D1C7;
+    --border-strong: #B4B2A9;
+    --text: #2C2C2A;
+    --text2: #5F5E5A;
+    --text3: #888780;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #EEF2F7;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    background: var(--brand);
+    color: white;
+    padding: 28px 40px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--brand-mid);
+  }
+  .page-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+  .page-header p {
+    font-size: 13px;
+    opacity: 0.75;
+    margin-top: 3px;
+  }
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.2);
+    margin-top: 14px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #5DCAA5;
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .form-container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .section-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-number {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brand);
+  }
+
+  .section-body {
+    padding: 24px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .field-row.single { grid-template-columns: 1fr; }
+  .field-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .field-group { display: flex; flex-direction: column; gap: 5px; }
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  label .req { color: var(--danger); margin-left: 2px; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(29,95,138,0.1);
+  }
+  input:disabled, select:disabled {
+    background: var(--surface2);
+    color: var(--text3);
+    cursor: not-allowed;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888780' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
+
+  textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+
+  .search-wrap { position: relative; }
+  .search-wrap input { padding-right: 30px; }
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    font-size: 14px;
+    pointer-events: none;
+  }
+  .autocomplete-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-top: none;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    z-index: 50;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .autocomplete-list.show { display: block; }
+  .autocomplete-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  .autocomplete-item:last-child { border-bottom: none; }
+  .autocomplete-item:hover, .autocomplete-item.selected { background: var(--brand-light); color: var(--brand); }
+  .autocomplete-item .role-hint { font-size: 11px; color: var(--text3); margin-left: 6px; }
+
+  .autofilled {
+    background: var(--accent-light) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    font-weight: 500;
+  }
+
+  .checkbox-group, .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px 0;
+  }
+  .checkbox-group.horizontal, .radio-group.horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .check-item, .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .check-item input[type="checkbox"],
+  .radio-item input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 3px;
+    background: var(--surface);
+    cursor: pointer;
+    accent-color: var(--brand);
+    flex-shrink: 0;
+    padding: 0;
+  }
+  .radio-item input[type="radio"] { border-radius: 50%; }
+
+  .conditional-block {
+    display: none;
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: var(--surface2);
+    border-left: 3px solid var(--brand);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .conditional-block.visible { display: block; }
+
+  .tag-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    padding: 4px 0;
+  }
+  .tag-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 13px;
+  }
+  .tag-item:hover { border-color: var(--brand); background: var(--brand-light); }
+  .tag-item input[type="checkbox"] {
+    width: 15px; height: 15px;
+    accent-color: var(--brand);
+    padding: 0;
+    cursor: pointer;
+  }
+  .tag-item.checked { border-color: var(--brand); background: var(--brand-light); color: var(--brand); font-weight: 500; }
+
+  .upload-zone {
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--surface2);
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--brand);
+    background: var(--brand-light);
+  }
+  .upload-zone .upload-icon { font-size: 28px; color: var(--text3); margin-bottom: 8px; }
+  .upload-zone p { font-size: 13px; color: var(--text2); }
+  .upload-zone strong { color: var(--brand); }
+  .upload-zone input[type="file"] { display: none; }
+  .upload-preview {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: var(--accent-light);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--accent);
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .upload-preview.show { display: flex; }
+
+  .hint {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  .info-banner {
+    background: var(--warn-light);
+    border: 1px solid #EF9F27;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--warn);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .info-banner b { font-weight: 600; }
+
+  .required-banner {
+    background: var(--danger-light);
+    border: 1px solid #F09595;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--danger);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .submit-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+  }
+  .submit-info {
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .submit-info b { color: var(--text2); }
+
+  .btn {
+    padding: 10px 24px;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+  .btn-primary {
+    background: var(--brand);
+    color: white;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { background: #185FA5; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border-strong);
+  }
+  .btn-secondary:hover { background: var(--surface2); }
+
+  .char-count {
+    font-size: 11px;
+    color: var(--text3);
+    text-align: right;
+    margin-top: 3px;
+  }
+
+  .field-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  .loading-indicator {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text3);
+    padding: 6px 0;
+  }
+  .loading-indicator.show { display: flex; }
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--border);
+    border-top-color: var(--brand);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .badge-success { background: var(--accent-light); color: var(--accent); }
+  .badge-warn { background: var(--warn-light); color: var(--warn); }
+  .badge-error { background: var(--danger-light); color: var(--danger); }
+
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 40px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .success-screen.show { display: block; }
+  .success-icon { font-size: 48px; color: var(--accent); margin-bottom: 16px; }
+  .success-screen h2 { font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400; color: var(--brand); margin-bottom: 10px; }
+  .success-screen p { color: var(--text2); max-width: 400px; margin: 0 auto 24px; }
+
+  @media (max-width: 600px) {
+    .field-row { grid-template-columns: 1fr; }
+    .field-row.three { grid-template-columns: 1fr; }
+    .page-header { padding: 20px; }
+    .section-body { padding: 16px; }
+    .form-container { padding: 16px 12px 100px; }
+  }
+
+  .data-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+  }
+  .data-status.loading { background: var(--warn-light); color: var(--warn); }
+  .data-status.loaded { background: var(--accent-light); color: var(--accent); }
+  .data-status.error { background: var(--danger-light); color: var(--danger); }
+
+
+
+  .other-specify {
+    display: none;
+    margin-top: 8px;
+  }
+  .other-specify.show { display: block; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAF8AXkDASIAAhEBAxEB/8QAHAABAAICAwEAAAAAAAAAAAAAAAcIBAYBAgUD/8QASRAAAQIDAgYMDAUEAgIDAAAAAAECAwQFBhEHFzVxc5ESFiExMjNRU3KxwdEIFTY3QVJUVXSSk7ITFCJC4SNhgaE0QyViJESC/8QAGwEBAAIDAQEAAAAAAAAAAAAAAAECBAUGAwf/xAAyEQEAAQMBAgwFBQEAAAAAAAAAAQIDEQQFEhQVITEyM0FCUVJxgQYTkaHBIjRhsfDh/9oADAMBAAIRAxEAPwC5YNHww2sqFkqJLztOZBdEiRFaqRG3pdud5FOPC1PMSP0l7wnCxwK448LU8xI/SXvGPC1PMSP0l7yMmFjgVxx4Wp5iR+kveMeFqeYkfpL3jJhY4FcceFqeYkfpL3jHhanmJH6S94yYWOBXHHhanmJH6S94x4Wp5iR+kveMmFjgVxx4Wp5iR+kveMeFqeYkfpL3jJhY4FcceFqeYkfpL3jHhanmJH6S94yYWOBXHHhanmJH6S94x4Wp5iR+kveMmFjgVxx4Wp5iR+kveMeFqeYkfpL3jJhY4FcceFqeYkfpL3jHhanmJH6S94yYWOBXHHhanmJH6S94x4Wp5iR+kveMmFjgVxx4Wp5iR+kveMeFqeYkfpL3jJhY4FcceFqeYkfpL3jHhanmJH6S94yYWOBXHHhanmJH6S94x4Wp5iR+kveMmFjgVxx4Wp5iR+kveMeFqeYkfpL3jJhY4FcceFqeYkfpL3jHhanmJH6S94yYWOBXHHhanmJH6S94x4Wp5iR+kveMmFjgVxx4Wp5iR+kveMeFqeYkfpL3jJhY4FcceFqeYkfpL3jHhanmJH6S94yYWOBXHHhanmJH6S94x4Wp5iR+kveMmFjgVxx4Wp5iR+kveMeFqeYkfpL3jJhY4FcceFqeYkfpL3jHhanmJH6S94yYWOBXHHhanmJH6S95y3DfalXIn4Ejv80veMmFjQY1KjvmqZKzMS7ZxYLHuu3r1RFMklCJ/CZ8k5LTr2FeZeE6NHhwW8J7kamdVLDeEz5JyWnXsIApGVZTTM60IWhIaYFbUql/40rrU5xKWp56V1qWSbwUORhGVbMSlqeeldajEpannpXWpZMDBlWzEpannpXWoxKWp56V1qWTAwZVsxKWp56V1qMSlqeeldalkwMGVbMSlqeeldajEpannpXWpZMDBlWzEpannpXWoxKWp56V1qWTAwZVsxKWp56V1qMSlqeeldalkwMGVbMSlqeeldajEpannpXWpZMDBlWzEpannpXWoxKWp56V1qWTAwZVsxKWp56V1qMSlqeeldalkwMGVbMSlqeeldajEpannpXWpZMDBlWzEpannpXWoxKWp56V1qWTAwZVsxKWp56V1qMSlqeeldalkwMGVbMSlqeeldajEpannpXWpZMDBlWzEpannpXWoxKWp56V1qWTAwZVsxKWp56V1qMSlqeeldalkwMGVbMSlqeeldajEpannpXWpZMDBlWzEpannpXWoxKWp56V1qWTAwZVsxKWp56V1qMSlqeeldalkwMGVbMSlqeeldajEpannpXWpZMDBlWzEpannpXWoxKWp56V1qWTAwZVbtHgrtBQqNMVWbiS6wZduyejVW+40NnDTOWwwy+besaDtQqezhpnCYXRs7kCn/DQ/tQzzAs7kCn/AA0P7UM8lVE/hM+Sclp17CAKRlWU0zOtCf8AwmfJOS069hAFIyrKaZnWhC0LrN4KHJw3gockqgAAAAADosWEi3fiM1j8WHzjdYHcHT8WFzjdY/Fhc4zWDLuDqkSGu89q/wCTsi37wAAAD5TsZYErFjIl6saq3H1MWr5MmNGvUWojNUQpcmYomYapt0jeysG3SN7Kw1MHRcCseVxXGur87bNukb2Vg26RvZWGpgcCseU411fnbZt0jeysG3SN7Kw1MDgVjynGur87bNukb2Vg26RvZWGpgcCseU411fnbZt0jeysG3SN7Kw1MDgVjynGur87bodsozno38qzdU3GG7ZQ2u5URSI4HHMzktwOIh9FOo1u0LFFrd3Iw3mxtXd1G/wDMnOMO4ANa3gAAAAAAAAAAAAAAADT8Mvm3rGg7UKns4aZy2GGXzb1jQdqFT2cNM5ErQujZ3IFP+Gh/ahnmBZ3IFP8Ahof2oZ5KqJ/CZ8k5LTr2EAUjKsppmdaE/wDhM+Sclp17CAKRlWU0zOtCFoXWbwUOThvBQ5JVAAAOHtRzVau8qXHIAi61WDF74U1OUusz0GN+qIjXxL237928QLMVquy8d8CJUZlHsXYqmz9JceZS+Wip/wCi9RTa1zUbaepNTeSZf1kzUimiIl69kH120FahSDapMta5f1O2W8hNEvgshvl2rFrFR2apu/1U7iKsByItqnKvoYnWWih8BuY9s7luJjtYmPmX6qZnkjCFbT4O7U0mWfOWfr01F/DRXLCc/wDUqJyKadQMK1qaPNpBqERZtkN2xe2In60u3yzipelylZMP9DhUi2f48CGjIU4z8RERNy9LkX/Z5b887Ii3HNKcLC23plqZRIku9GRU4UNy7qKbWU5sVXJihV2BNQojmsVyJES/cVC21n55lQpUCYYt+yYilqqYmnehSiqqi58ur2egYtXyZMaNeoyjFq+TJjRr1FaOlC93oVeiKAAdY+dgAAAAAAAAAA7wOOZnJbgcRD6KdREkDjmZyW4HEQ+inUajavd93SfD/f8Ab8u4ANQ6QAAAAAAAAAAAAAAABp+GXzb1jQdqFT2cNM5bDDL5t6xoO1Cp7OGmciVoXRs7kCn/AA0P7UM8wLO5Ap/w0P7UM8lVE/hM+Sclp17CAKRlWU0zOtCf/CZ8k5LTr2EAUjKsppmdaELQus3gocnDeChySqAAAAAOkx/x4nQXqKbWw8qan8S/rLkzH/HidBeoptbDypqfxL+siUw2rAb5Uv6CdZaGHwG5ir2A3ypf0E6y0MPgNzGRX1VHuw7X7i57f05IN8KGE38WlRfSjHN/2TkQH4T8211Wpcm1b1ZBc5yci3ngy450NFscEj3RLJSrn7+wQqpIy75uchS0NFV0R6NT/JbnB/JLJWdl4apd+hNw9qIxaqn0Y16c36Ijwn8NiMWr5MmNGvUZRi1fJkxo16jzo6UPW70KvRFAAOsfOwAAAAAAAAAAd4HHMzktwOIh9FOoiSBxzM5LcDiIfRTqNRtXu+7pPh/v+35dwAah0gAAAAAAAAAAAAAAADT8Mvm3rGg7UKns4aZy2GGXzb1jQdqFT2cNM5ErQujZ3IFP+Gh/ahnmBZ3IFP8Ahof2oZ5KqJ/CZ8k5LTr2EAUjKsppmdaE/wDhM+Sclp17CAKRlWU0zOtCFoXWbwUOThvBQ5JVAAAAAHSY/wCPE6C9RTa2HlTU/iX9ZcmY/wCPE6C9RTa2HlTU/iX9ZEphtWA3ypf0E6y0MPgNzFS8GKVZa2/xO6C2PsU4xNzfJmdCwpPh7FseQZem+jV7zJmN61T7sGKoov1+39JDq9SkqTIRZ6fjtgwYbb3Ocv8AoqdhFtC+1Fq5moNRfw1dsITf/VNxNdxJ9TwdW2tDHRa7XvxIV/ATcRDY7J4JqPSIjI0dPzEVu7sn7txT5cds4e3z57tMzP0aJgasFNTE4yrT8FWMTdhtcn+ywUvCbBgthNS5GpcdZOVgykJIUBiManIfYV1xMRTTzQWbU0zNdfLVP+wGLV8mTGjXqMoxavkyY0a9RSjpQvd6FXoigAHWPnYAAAAAAAAAAO8DjmZyW4HEQ+inURJA45mcluBxEPop1Go2r3fd0nw/3/b8u4ANQ6QAAAAAAAAAAAAAAABp+GXzb1jQdqFT2cNM5bDDL5t6xoO1Cp7OGmciVoXRs7kCn/DQ/tQzzAs7kCn/AA0P7UM8lVE/hM+Sclp17CAKRlWU0zOtCf8AwmfJOS069hAFIyrKaZnWhC0LrN4KHJw3gockqgAAAADpMf8AHidBeoptbDypqfxL+suTMf8AHidBeoptbDypqfxL+siUw2rAb5Uv6CdZaGHwG5ir2A3ypf0E6y0MPgNzGRX1VHuw7X7i57f05AB4MsAAAxavkyY0a9RlGLV8mTGjXqLUdKHnd6FXoigAHWPnYAAAO8vBiR4zYMJque5bkRDdqPZKXhw0fPKsSIv7U3kPC/qaLMfqZel0V3VTiiPdowJQShUlG7H8hB1HlVeycrFhK+S/pRE3m+hTGo2laqnExhn3Nh6iinMTEtEB9JqBFlo7oMZqte1blRT5mwic8sNNMTE4l3gcczOS3A4iH0U6iJIHHMzktwOIh9FOo1G1e77uj+H+/wC35dwAah0gAAAAAAAAAAAAAAADT8Mvm3rGg7UKns4aZy2GGXzb1jQdqFT2cNM5ErQujZ3IFP8Ahof2oZ5gWdyBT/hof2oZ5KqJ/CZ8k5LTr2EAUjKsppmdaE/+Ez5JyWnXsIApGVZTTM60IWhdZvBQ5OG8FDklUAAAA4cmyarb1S9Lr0AwaxUZOSp8xGmJmFDRkNy/qcnIU5rky2crE3Nt4MWK56f5UsRXMFUKqzMSJNVaejMe5XI18VVRL/QeczAhRtkmymJi70/rL7kTHPDyi7MTjdn/AHuizBJUpem2rhOmYiQ4cW5quXeQtNJ1CSmITXQpmE5FT0OQi2LgQomy/pzExd/d5lyOCj8i9jpSsTsJGLeiJEW49cRNEUzMcjwmaqbk100zy/7xSkm7vA+EhBiQJSHCiRFiOalyuX0n3PCYxLLpmZjMgAISGLV8mTGjXqMoxavkyY0a9RajpQ87vQq9EUAA6x87AABt2D2Sa90ade29WrsW3+hTczW8HzmrSoqJvpE3dRshzetqmq9Vl3GyqKadLTjtAAYrYNQwgyLEZDnmNudfsX9hppIdu1b4gei76vbdrI8Og2fVNVnl7HGbZt00aqcdsZd4HHMzktwOIh9FOoiSBxzM5LcDiIfRTqMbavd92f8AD/f9vy7gA1DpAAAAAAAAAAAAAAAAGn4ZfNvWNB2oVPZw0zlsMMvm3rGg7UKns4aZyJWhdGzuQKf8ND+1DPMCzuQKf8ND+1DPJVRP4TPknJadewgCkZVlNMzrQn/wmfJOS069hAFIyrKaZnWhC0LrN4KHJw3gockqgMOqVGWpsFIsyrkaq3JsUvPN22Uj1o3yfyetFi5XGaacse5q7NqrdrqiJe8DwdtlI9aN8n8jbZSPWjfJ/Jbgt7yypw/TeePq94Hg7bKR60b5P5G2yketG+T+RwW95ZOH6bzx9XvA8HbZSPWjfJ/J3h2ppD3Xfivb/dzbu0cGveWSNfpp78fV7YMKWqtOmLkgzcJyr6EdumaioqXot55VUzTzwyKK6a4zTOQAFVwxavkyY0a9RlHwqEJ8aSjQmXbJzFRC1HJVCl2M0TEIlB68azdXh/8A1lf0d0wJiRm5fj5eJD6SHU03aKuaXAV6e7b6VMx7McAF3i2Kw9SZKTrpeK66HG3l5FN/Td3iHkVUVFRblQ2Oj2qmpSG2DMMSOxNxFVd1DV63RVXKt+jnb/Ze1KLNPyrvN2S34GsbcZLY3/gxNlyXHlVW1s1MsdCloaQWruK6+9TBo0N6qcYw213a2lopzFWfR9beVNkeKyRguRUhre9U9K8hqpy5yucrnKqqu+qnBvbNqLVEUQ5LVairUXZuVdrvA45mcluBxEPop1ERwlRsRqrvIpv8K1dJbCY1XRb0aiL+j+TB2jarubu7GW22JftWd/5lURnDYAeDtspHrRvk/kbbKR60b5P5NXwW95Zb/h+m88fV7wPB22Uj1o3yfyNtlI9aN8n8jgt7yycP03nj6veB4O2yketG+T+RtspHrRvk/kcFveWTh+m88fV7wPB22Uj1o3yfyNtlI9aN8n8jgt7yycP03nj6veB4O2yketG+T+RtspHrRvk/kcFveWTh+m88fV7wPB22Uj1o3yfyNtlI9aN8n8jgt7yycP03nj6veB8ZKZhTcs2Yg37B29elx9jxmJicSyqaoqjMNPwy+besaDtQqezhpnLYYZfNvWNB2oVPZw0zlZXhdGzuQKf8ND+1DPMCzuQKf8ND+1DPJVRP4TPknJadewgCkZVlNMzrQn/wmfJOS069hAFIyrKaZnWhC0LrN4KHJw3gockqtZwg5Mh9NDRDe8IOTIfTQ0Q6DZ3Uw43bX7qfSAAGc1IAAAAA5Rzk3lVMymVK1OflVvgTMRn+TEBFVMVckwtTXVROaZw2WRtfOwrmzENsVvL6T35C1NNmVRsRXQXL6Hd5HYMS5oLNfZhsbO19Ta55zH8pegxoUZuyhRGPTlat53ImlJ2alXo6BHey70I7c1GxU22Ewy5k5CSI31k3FNfd2bcp5aJy3On25Zr5Lkbs/Zu51cxjuExq50MCnVqnzyIkKO1Hr+x24p6KKipehr6qaqJxMYbii5RdjNM5h5s5RKbNIv4ksxHL+5N88Co2O33SUf8A/LzcQe1vVXbfNLGv7P097pU/TkRTP02ckXq2YgObd6US9NZiEvRoUOMxWRYbXtX0OS81usWTlo+yiSTvwonqrvKbOztKmrkuRhotVsOuj9Vmcx4drRQZdRps3IRFZMQnN5F9CmIbKmqKozDR10VUTu1RiQAEqgAAAAAAAAAAAAAAAAAAk2yuQ5fMeoeXZXIcvmPUOWvdZV6voGl6ij0hp+GXzb1jQdqFT2cNM5bDDL5t6xoO1Cp7OGmc8ZZULo2dyBT/AIaH9qGeYFncgU/4aH9qGeSqifwmfJOS069hAFIyrKaZnWhP/hM+Sclp17CAKRlWU0zOtCFoXWbwUOThvBQ5JVazhByZD6aGiG94QcmQ+mhoh0Gzuphxu2v3U+kAAM5qQAAAAAAAAAAAAAaqtW9FVFPZplo6jJqjVi/iw0/a/dPGBSu3TcjFUZetq9ctTmicJCplqZCauZGvgRF9be1nuw3siNR0N7XtXeVFvQiAzZCqz0i5FgR3InIq3oa69symeW3OG7023a6eS9Gf5hKgNSplsIb9iyehbBfXbvf5NllJ2Vm2I+Xjsei8imru6e5a6UN9p9bZ1EfoqfSZl4MzCWHHhtexd9FQ1StWRRb4tOdd6fw3dht4FnUXLM5pk1Ojs6mMXI9+1Ek3Kx5WKsOPCcxycqHxJZnpGVnYasmILXovpu3TVKtY96bKJIRNkm/sHb/+DcWNo0V8lfJLm9VsW7a5bf6o+7UQZE3Izcq9WTEB7FTlQxzPiYmMw01VM0ziYwAAlAAAAAVFRblS4AAAAAAAACTbK5Dl8x6h5dlchy+Y9Q5a91lXq+gaXqKPSGn4ZfNvWNB2oVPZw0zlsMMvm3rGg7UKns4aZzxllQujZ3IFP+Gh/ahnmBZ3IFP+Gh/ahnkqon8JnyTktOvYQBSMqymmZ1oWA8JdrnWUk0a1XL+Ou8mYgKkQYvjWU/pP45n7V5UIWhdNvBQ5OG8FDklVrOEHJkPpoaIb3hByZD6aGiHQbO6mHG7a/dT6QAAzmpAAAAAAAAAAAAAAAAD0KLKSs9GWWixlgxXcW70KvIeectc5rkc1VRU3lQrXEzGInC9uqKaomqMw9CrUecprv60O+H6HpvGFLx40vER8GI6G5PS1bjeLL1eFVJX8jOo10VqXfq/chg2hssrEdM0/dbvrD5MxhUavFXy70Yn7S2l3Z29RF/TTmPDthh061k9L3NmESOxOXcXWbHIWnpsyiI96wXr6Hb2sjt7XMcrXorXJvopwXuaGzc5YjHo87G1tTZ5JnMfyl6DGhRmbOFEa9vK1bzuRJAm5mA7ZQY72KnIp60naiqQLkfESMieuncYFezK46M5be1t61PWUzH3SFGgwozNhGhte3kcl6Hjzll6XMXq2GsJy+otyajyIFtHXJ+PKIvLsF7zMh2ykXJ+qXitzqh5U6fVWujEsivW6DUR+uYn1hiTFi92+DN7nIrf5MR1jp9F/TEhr/k9pbX067gRD4RbZyjU/py0Vy50Mim5rfBh3LOyufex6TLzWWOnlX9UWGn+bzJZZCFBYsSbnkaxN/wDTd/u8x5y2M3ERWwILIacq754U7UZ2ccrpiYe/+19xkUUauvpVYYVy5s630KJqn7PYnZiiU9qw5GAkzG3tnE3UTMeBHiujRViPuvXk3joDMt2oo7cy1t6/N3siI8IAAejwAAAAAEm2VyHL5j1Dy7K5Dl8x6hy17rKvV9A0vUUekNPwy+besaDtQqezhpnLYYZfNvWNB2oVPZw0znjLKhdGzuQKf8ND+1DPMCzuQKf8ND+1DPJVfCdkpSdhpDnJWDMMRb0bEYjkTWYjaBQ2uRzaRIoqLeipAbuf6PSAAAAazhByZD6aGiG94QcmQ+mhoh0Gzuphxu2v3U+kAAM5qQAAAAAAAAAAAAAAAAAAfSVjxJaYZGhOVr2LeioSdQqgypU9kdqpst56cikWmyWDnnQaksq536Iqb39/QYOvsRct70c8NvsjVzZvRRPNV/b3LTWehT0N0xLNRkwiX3JvONCjQokGK6HEarXtW5UUl41u2FEbNwFnJdqJHYm6ifuQwtFrJpncr5mz2rsyK4m7ajl7Y8WhAKiotyg3blQAAAAAAAAAAAAAAAAAASbZXIcvmPUPLsrkOXzHqHLXusq9X0DS9RR6Q0/DL5t6xoO1Cp7OGmcthhl829Y0HahU9nDTOeMsqF0bO5Ap/wAND+1DPMCzuQKf8ND+1DPJVAAAAAGs4QcmQ+mhohveEHJkPpoaIdBs7qYcbtr91PpAADOakAAAAAAAAAAAAAAAAAAAyqPFWBU5eKn7Xopin0lUVZmGib+yQiuM0zC9uZpriYS4xb2IvKhyqIqXLvHWFxTOih2OSfRI5kdWypySVTWJDbdCi7qf2X0oeGb/AG+gJEo6Rrt2G9Lv8mgHR6K7NyzEz2cjidqWIs6mYjmnlAAZbXAAAAAAAAAAAAAAAAJNsrkOXzHqHl2VyHL5j1Dlr3WVer6Bpeoo9Iafhl829Y0HahU9nDTOWwwy+besaDtQqezhpnPGWVC6NncgU/4aH9qGeYFncgU/4aH9qGeSqAAAAAPAttKTE3IMZLQnRHI9FVENO8R1X2KJrQlAGbY11dmjdiGq1eybepufMqqmEX+I6r7FE1oPEdV9iia0JQB7caXPCGNxBZ80/ZF/iOq+xRNaDxHVfYomtCUAONLnhBxBZ80/ZF/iOq+xRNaDxHVfYomtCUAONLnhBxBZ80/ZF/iOq+xRNaDxHVfYomtCUAONLnhBxBZ80/ZF/iOq+xRNaDxHVfYomtCUAONLnhBxBZ80/ZF/iOq+xRNaHWJRqnDY575R6Nal6rehKRi1fJkxo16iadp3JmIxCtewrNNMzvT9kUAA3TlwAADNoUJY9XloSJvxEvMI2OwUosaqLMKl7ITf9+g8tRXuW6qmTo7U3b9NP8t9alzUTkQ5AOWd+8G3cRGUJzfS57btZHhsluam2am2ykJ17IO+qelTWzotBbmizGe1xW171N3Uzu80cgiKqoib6noJRKqqIqSb1Rf7oYUDjmZyW4HEQ+inURrNVVYxiOdbZmgo1e9vTMYRl4jqvsUTWg8R1X2KJrQlAGDxpc8IbXiCz5p+yL/EdV9iia0HiOq+xRNaEoAcaXPCDiCz5p+yL/EdV9iia0HiOq+xRNaEoAcaXPCDiCz5p+yL/EdV9iia0HiOq+xRNaEoAcaXPCDiCz5p+yL/ABHVfYomtB4jqvsUTWhKAHGlzwg4gs+afsi/xHVfYomtB4jqvsUTWhKAHGlzwg4gs+afs8+zsGLApEGFGYrHom6inoAGurq3qpqbu3RFuiKY7Gn4ZfNvWNB2oVPZw0zlsMMvm3rGg7UKns4aZykvWF0bO5Ap/wAND+1DPMCzuQKf8ND+1DPJVAAAAAAAAAAAAAAAAAAAAAAxavkyY0a9RlGLV8mTGjXqLUdKHnd6FXoigAHWPnYAABI1jJH8nSWvelz4v6lzeg0uzdPdUKnDh3foauyevIhJzGoxqNalyIlyIanad7ki3DothabMzen0hya5a6utk4Syks5FjvTdVP2ofW1FdZToKwYCo6Ycl13q/wByPo0R8aK6JEcrnOW9VU8tFo9+d+vmZG1dpxbibNqeXtnwdXKrnK5VvVd9QAbtyrvA45mcluBxEPop1ESQOOZnJbgcRD6KdRqNq933dJ8P9/2/LuAa7bes1qjS0GNSKMlT2SqkRNmrVYno9BqIjLo5mIjMtiBC9Qw01GmzH5eoWaWXi+q6It/UY2PhfcrfqL3EzGCJzGYTiCH6VhZr1VarqdZT8dvrJFW7qJLs3U5ipSEONNSqy0ZWor4d9+xX0oW+XVjexyPP51G9u55Xqg4eqoxytS9UTcTlIxr+EO1NIjzH49kFWXhOVEitiKqK1F3F3isRM8y9VUU86TwQcmHh3pojUXSr3HeFh0jxorYUCgtiRHLcjUiLev8AoYymZxyym4Ef2UttX6rPshT1m3SUu5OM2aqt+a439q3tReVCaqKqedSi7RczuzlyACr0afhl829Y0HahU9nDTOWwwy+besaDtQqezhpnIlaF0bO5Ap/w0P7UM8wLO5Ap/wAND+1DPJVAAAAAAAAAAAAAAAAAAAAAAxavkyY0a9RlGLV8mTGjXqLUdKHnd6FXoigAHWPnYERVW5EvUGxWLpKzc2k3Gb/RhLel/pU87t2LVE1S9tPYqv3It09rZLI0tKfT0e9P60X9Tv7JyHS09eh06GsCAqOmXJuXbzc587T2ghyENZaVVHR1S5bv2mhRoj40R0SI5XOct6qpq9Ppqr9fzbvM3+t19Gktxp7HPHb4f9cx4sSPFdFiuVz3LeqqdADcRGHNzMzOZAAEO8DjmZyW4HEQ+inURJA45mcluBxEPop1Go2r3fd0nw/3/b8u5wqIqXKl5yDUOkQn4TkjLtk6dOshtbE2ewVUT0bq9hBRP/hPZCp+n7FIAIlamMQtHgdkZeFZyDdCbejE3buXdN9a1reC1EzGmYJPJ2F0G9SG6GTqesmGBs+I+RE+v9h8JuBBiy8RsSG1yOaqLen9j7nWNxT+ipjsyYyphaWXZK1+dl4aXMhxlRENlwNycKcta1IrUXYM2SX8t6HgWy8qajp3G0YDPK9dF2oeun62Hhreoq/3as5Ky0GDBYxkNqXJyH3OGcFMxyeczMzyvammKYxAACFmn4ZfNvWNB2oVPZw0zlsMMvm3rGg7UKns4aZyJWhdGzuQKf8ADQ/tQzzAs7kCn/DQ/tQzyVQAAAAAAAAAAAAAAAAAAAAAMWr5MmNGvUZRi1fJkxo16i1HSh53ehV6IoAOYbVe9rG77luQ6x87ZdIkI1RnGQISbir+peRDaa1VoFGkkplOVPxWpc5yft/k810/AotPWUklR81ET+rET9v9jXXvc96ve5XOXfVTDm3Oor3qujHNHi2UXo0luaLfTnnnw/iCI90R6vequc5b1VTgAzGtAAAAAHeBxzM5LcDiIfRTqIkgcczOS3A4iH0U6jUbV7vu6T4f7/t+XcAGodIh3wnshU/T9ikAE/8AhPZCp+n7FIAIlaFrcEnk7C6DepDdDQsFM/IwrPw2xZyXYuwbuOiInoQ3HxpTPeEr9VveZOp6yWBoOSxSzDrG4p/RUxfGlM94Sv1W951i1Sm/hP8A/ISvBX/tb3nhiWZmFQrZeVNR07jaMBnleui7UNWte5r7T1BzXI5qx3XKi75tOAzyvXRdqHpp+sh46zqJ9v7WiZwUzHJwzgpmOTyl7RzAACWn4ZfNvWNB2oVPZw0zlsMMvm3rGg7UKns4aZyJWhdGzuQKf8ND+1DPMCzuQKf8ND+1DPJVAAAAAAAAAAAAAAAAAAAAAAxavkyY0a9RlGLV8mTGjXqLUdKHnd6FXoig7tejWLci7L0Ov3joDrHzuJwLureAAAAAAAAAAO8DjmZyW4HEQ+inURJA45mcluBxEPop1Go2r3fd0nw/3/b8u4ANQ6RDvhPZCp+n7FIAJ/8ACeyFT9P2KQARK0J7sHg7oVXo8OYjpHR6tRV2MRU9BsWKWznLM/VU9DBJ5Owug3qQ3Qy9RVu3JiGt0VEV2Yqqmc+qO8UtnOWZ+qpxEwTWdRjlvmdxF/7VJFOsbin9FTw+ZLL+TT/pUvtHLMk65OSsO/YQoqtS9Tb8Bnleui7UNXtl5U1HTuNowGeV66LtQtp+thTWdRPt/a0TOCmY5OGcFMxyeUveOYAAS0/DL5t6xoO1Cp7OGmcthhl829Y0HahU9nDTORK0Lo2dyBT/AIaH9qGeYFncgU/4aH9qGeSqAAAAAAAAAAAAAAAAAAAAABi1fJkxo16jKMWr5MmNGvUWo6UPO70KvRFAAOsfOwAAAAAAAAAAd4HHMzktwOIh9FOoiSBxzM5LcDiIfRTqNRtXu+7pPh/v+35dwAah0iHfCeyFT9P2KQAT74Tz2+JqdDv/AFLGvu/wpARErQtbgk8nYXQb1IboaTghcjrNwlRb02CdRuxk6rrJYOz/ANvSHWNxT+ip2Osbin9FTHZim1svKmo6dxtGAzyvXRdqGrWvcj7T1BzVvRY7rjaMBzmtthcq3Xwrk1oeun6yHhrOon2/taNnBTMcnDOCmY5PKXtHMAAJafhl829Y0HahU9nDTOWwwy+besaDtQqezhpnIlaF0bO5Ap/w0P7UM8wLO5Ap/wAND+1DPJVAAAAAAAAAAAAAAAAAAAAAAxavkyY0a9RlGLV8mTGjXqLUdKHnd6FXoigHOxXkUbFeRTrHztwDnYryKNivIoHAOdivIo2K8igcA52K8ijYryKBwDnYryKNivIoHaBxzM5LcDiIfRTqIlgNX8Zm4u+S1A4iH0U6jUbU7vu6T4f7/t+Xc1229cqlEloMSmUaLUnPVUcjFS5n913UNiOHIjkuVEVDUw6Oc45Fa8Im3i2U7CjTVBiwIUFFSHDYqKmffNXbYS1jmK9KJM7FPTud5bn8GFzbdR2SGxEuRqXF5+X4S84+dHbH0/6gSwdbtvZiTbJxbORpmC3eW9L0/wBk02bqkSqU+HHjSr5aI5qK+G7favIeh+DC5tuo7sY1nBaiE1101Rzcrzt2q6J54x/v5HqrWOVEvVEvROUiy1VtrZ//ACpGmWVjMW9zGxnqm9vXpukqHR0KG5b3MRVKU47XtXFUx+lUWLYy1kaM6I+jzLnvW9V3N/WZ1Cs5bSh1WFPS9FmEiQ1vuW65U1lrEgwk/wCtuoLChrvsRS0VUROYiXnVTdqpmmqY+n/Uf2NtlX5ychyVWs9GlG7Hjb70v1khNW9qLyodUgwkW9GNRcx3Irqpnmha1RXT0pAAUerT8Mvm3rGg7UKns4aZy2GGXzb1jQdqFT2cNM5ErQujZ3IFP+Gh/ahnmBZ3IFP+Gh/ahnkqgAAAAAAAAAAAAAAAAAAAAAFRFS5URU/uAB8vy0vzEL5EH5aX5iF8iH1BO9Ku5T4Pl+Wl+YhfIg/LS/MQvkQ+oG9JuU+D5flpfmIXyIPy0vzEL5EPqBvSblPg+X5aX5iF8iD8tL8xC+RD6gb0m5T4Pl+Wl+YhfIg/LS/MQvkQ+oG9JuU+D5fl5fmIfyofUAZmUxERzAAISAAAAAAAAAAAAAAAA0/DL5t6xoO1Cp7OGmcthhl829Y0HahU9nDTORK0Lo2dyBT/AIaH9qGeYFncgU/4aH9qGeSqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABH+EfCRBsfVIUjEkXR1iM2V6Lvb3eBIAIWx7yvuh+sY95X3Q/WE4TSCFse8r7ofrGPeV90P1gwmkELY95X3Q/WMe8r7ofrBhNIIWx7yvuh+sY95X3Q/WDCaQQtj3lfdD9Yx7yvuh+sGE0ghbHvK+6H6xj3lfdD9YMJpBC2PeV90P1jHvK+6H6wYTSCFse8r7ofrGPeV90P1gwmkELY95X3Q/WMe8r7ofrBhNIIWx7yvuh+sY95X3Q/WDDecMvm3rGg7UKns4aZyXrbYXpe0FmJ2kMproTpmHsUeq7xELOGmciUwujZ3IFP+Gh/ahnmBZ3IFP8Ahof2oZ5KoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEHYfrM1us2jlZimyEaYhthXOVjVW5dwnEAVE2g2t9yzXyL3DaDa33LNfIvcW7BGE5VE2g2t9yzXyL3DaDa33LNfIvcW7AwZVE2g2t9yzXyL3DaDa33LNfIvcW7AwZVE2g2t9yzXyL3DaDa33LNfIvcW7AwZVE2g2t9yzXyL3DaDa33LNfIvcW7AwZVE2g2t9yzXyL3DaDa33LNfIvcW7AwZVE2g2t9yzXyL3DaDa33LNfIvcW7AwZVE2g2t9yzXyL3DaDa33LNfIvcW7AwZVE2g2t9yzXyL3DaDa33LNfIvcW7AwZVE2g2t9yzXyL3DaDa33LNfIvcW7AwZVE2g2t9yzXyL3HLbBWs2Sf+Gmt/1F7i3QGDLDocN8KjSUKI1WvZLsa5F9Co1DMAJQ//2Q==" alt="PureProgress logo" style="height:52px;width:auto;background:white;border-radius:6px;padding:4px;">
+    <div>
+      <h1>PureProgress — Therapy Success Story Intake</h1>
+      <p>Monthly submission · Due the 15th of each month</p>
+    </div>
+  </div>
+  <div class="progress-bar" style="margin-top:14px;"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="form-container">
+
+
+  <div id="dataStatusBar" class="data-status loading">
+    <div class="spinner"></div>
+    Loading facility and employee data…
+  </div>
+
+  <div id="mainForm">
+
+    <!-- SECTION 1: SUBMISSION INFO -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-number">1</div>
+        <div class="section-title">Submission Info</div>
+      </div>
+      <div class="section-body">
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="facilityName">Facility Name <span class="req">*</span></label>
+            <select id="facilityName" required>
+              <option value="">— Select facility —</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="dateSubmitted">Date Submitted <span class="req">*</span></label>
+            <input type="date" id="dateSubmitted" required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="submittedBySearch">Submitted By — Name <span class="req">*</span></label>
+            <div class="search-wrap">
+              <input type="text" id="submittedBySearch" placeholder="Search employee name…" autocomplete="off" disabled>
+              <span class="search-icon">⌕</span>
+              <div class="autocomplete-list" id="submittedByList"></div>
+            </div>
+            <span class="hint">Select a facility first to filter employees</span>
+          </div>
+          <div class="field-group">
+            <label for="submittedByRole">Role / Job Title</label>
+            <input type="text" id="submittedByRole" placeholder="Auto-filled from roster" disabled>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label>Best Contact Method <span class="req">*</span></label>
+            <div class="radio-group horizontal">
+              <label class="radio-item">
+                <input type="radio" name="contactMethod" value="phone" onchange="toggleContact(this)"> Phone
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="contactMethod" value="email" onchange="toggleContact(this)"> Email
+              </label>
+            </div>
+            <div class="conditional-block" id="contactPhone">
+              <div class="field-group">
+                <label for="contactPhoneVal">Phone Number</label>
+                <input type="tel" id="contactPhoneVal" placeholder="(555) 000-0000">
+              </div>
+            </div>
+            <div class="conditional-block" id="contactEmail">
+              <div class="field-group">
+                <label for="contactEmailVal">Email Address</label>
+                <input type="email" id="contactEmailVal" placeholder="name@facility.com">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 2: PATIENT STORY -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-number">2</div>
+        <div class="section-title">The Patient Story</div>
+      </div>
+      <div class="section-body">
+
+        <div class="field-row single">
+          <div class="field-group">
+            <label for="q1Hook">Q1 — What made this case stand out? (The Hook) <span class="req">*</span></label>
+            <textarea id="q1Hook" rows="4" maxlength="600" placeholder="What was unusual, moving, or unexpected? 2–4 sentences." oninput="updateChar(this,'q1Count')"></textarea>
+            <div class="char-count"><span id="q1Count">0</span>/600</div>
+          </div>
+        </div>
+
+        <div class="field-row single">
+          <div class="field-group">
+            <label for="q2Diagnosis">Q2 — Diagnosis or Condition Treated <span class="req">*</span></label>
+            <input type="text" id="q2Diagnosis" placeholder="Plain language OK, note severity if relevant">
+          </div>
+        </div>
+
+        <hr class="field-divider">
+
+        <div class="field-row three">
+          <div class="field-group">
+            <label for="lengthOfStay">Length of Stay (days)</label>
+            <input type="number" id="lengthOfStay" min="1" placeholder="e.g. 21">
+          </div>
+          <div class="field-group" style="grid-column: span 2;">
+            <label for="dischargeDestination">Discharge Destination <span class="req">*</span></label>
+            <select id="dischargeDestination" required onchange="toggleOtherDestination(this)">
+              <option value="">— Select destination —</option>
+              <option value="Home">Home</option>
+              <option value="Home with Home Health">Home with Home Health</option>
+              <option value="ALF">ALF — Assisted Living Facility</option>
+              <option value="IL">IL — Independent Living</option>
+              <option value="Memory Care">Memory Care</option>
+              <option value="SNF">SNF — Skilled Nursing Facility</option>
+              <option value="Hospital">Hospital</option>
+              <option value="Long-Term Acute Care">Long-Term Acute Care (LTAC)</option>
+              <option value="Inpatient Rehab">Inpatient Rehab (IRF)</option>
+              <option value="Hospice">Hospice</option>
+              <option value="Other">Other (specify below)</option>
+            </select>
+            <div class="other-specify" id="dischargeOther">
+              <input type="text" id="dischargeOtherVal" placeholder="Please specify discharge destination">
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row single">
+          <div class="field-group">
+            <label for="functionalGains">Functional Gains Made <span class="req">*</span></label>
+            <textarea id="functionalGains" rows="3" maxlength="500" placeholder="Specifics sell! e.g. walked 200 ft with walker (was bed-bound on admit), regained ability to feed self." oninput="updateChar(this,'gainsCount')"></textarea>
+            <div class="char-count"><span id="gainsCount">0</span>/500</div>
+          </div>
+        </div>
+
+        <hr class="field-divider">
+
+        <div class="field-row single">
+          <div class="field-group">
+            <label for="q4Quote">Q4 — Quote (patient, family, or therapist) <span class="req">*</span></label>
+            <textarea id="q4Quote" rows="3" placeholder="Capture it in their actual words — don't polish it." maxlength="400" oninput="updateChar(this,'quoteCount')"></textarea>
+            <div class="char-count"><span id="quoteCount">0</span>/400</div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label>Quote Attributed To</label>
+            <div class="radio-group horizontal">
+              <label class="radio-item">
+                <input type="radio" name="quoteSource" value="patient" onchange="toggleQuoteSource(this)"> Patient
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="quoteSource" value="family" onchange="toggleQuoteSource(this)"> Family
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="quoteSource" value="therapist" onchange="toggleQuoteSource(this)"> Therapist
+              </label>
+            </div>
+
+            <div class="conditional-block" id="quoteManual">
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="quoteAttrName">Name</label>
+                  <input type="text" id="quoteAttrName" placeholder="First and last name">
+                </div>
+                <div class="field-group">
+                  <label for="quoteRelationship">Relationship</label>
+                  <input type="text" id="quoteRelationship" placeholder="e.g. Daughter, Spouse">
+                </div>
+              </div>
+            </div>
+
+            <div class="conditional-block" id="quoteTherapist">
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="therapistSearch">Therapist Name</label>
+                  <div class="search-wrap">
+                    <input type="text" id="therapistSearch" placeholder="Search therapist…" autocomplete="off" disabled>
+                    <span class="search-icon">⌕</span>
+                    <div class="autocomplete-list" id="therapistList"></div>
+                  </div>
+                  <span class="hint" id="therapistHint">Select a facility first</span>
+                </div>
+                <div class="field-group">
+                  <label for="therapistRole">Discipline / Role</label>
+                  <input type="text" id="therapistRole" placeholder="Auto-filled from roster" disabled>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="field-divider">
+
+        <div class="field-row single">
+          <div class="field-group">
+            <label for="q5TherapyTeam">Q5 — Therapy Team Involved</label>
+            <textarea id="q5TherapyTeam" rows="2" placeholder="Names and disciplines (PT, OT, SLP). Marketing may interview one for a fuller quote."></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 3: STORY TAGS -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-number">3</div>
+        <div class="section-title">Story Tags</div>
+      </div>
+      <div class="section-body">
+        <p style="font-size:12px;color:var(--text3);margin-bottom:14px;">Select all that apply. Used to organize stories on the facility blog.</p>
+        <div class="tag-grid" id="tagGrid">
+          <label class="tag-item"><input type="checkbox" value="stroke_recovery" onchange="toggleTag(this.parentElement)"> Stroke Recovery</label>
+          <label class="tag-item"><input type="checkbox" value="orthopedic" onchange="toggleTag(this.parentElement)"> Orthopedic (joint replacement, fracture)</label>
+          <label class="tag-item"><input type="checkbox" value="cardiac" onchange="toggleTag(this.parentElement)"> Cardiac Recovery</label>
+          <label class="tag-item"><input type="checkbox" value="pulmonary" onchange="toggleTag(this.parentElement)"> Pulmonary / Respiratory</label>
+          <label class="tag-item"><input type="checkbox" value="neurological" onchange="toggleTag(this.parentElement)"> Neurological (non-stroke)</label>
+          <label class="tag-item"><input type="checkbox" value="post_surgical" onchange="toggleTag(this.parentElement)"> Post-Surgical Recovery</label>
+          <label class="tag-item"><input type="checkbox" value="wound_care" onchange="toggleTag(this.parentElement)"> Wound Care</label>
+          <label class="tag-item"><input type="checkbox" value="pain_management" onchange="toggleTag(this.parentElement)"> Pain Management</label>
+          <label class="tag-item"><input type="checkbox" value="fall_recovery" onchange="toggleTag(this.parentElement)"> Fall Recovery</label>
+          <label class="tag-item" id="tagOtherItem"><input type="checkbox" value="other" onchange="toggleTag(this.parentElement); toggleOtherTag(this)"> Other</label>
+        </div>
+        <div class="other-specify" id="tagOtherSpecify" style="margin-top:10px;">
+          <input type="text" id="tagOtherVal" placeholder="Describe the condition / category">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: PHOTO & PERMISSIONS -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-number">4</div>
+        <div class="section-title">Photo &amp; Permissions</div>
+      </div>
+      <div class="section-body">
+
+        <div class="field-row single">
+          <div class="field-group">
+            <label>Photo Status <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-item">
+                <input type="radio" name="photoStatus" value="patient_photo" onchange="togglePhotoUpload(this)"> Photo attached (patient)
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="photoStatus" value="team_photo" onchange="togglePhotoUpload(this)"> Photo attached (therapy team / facility)
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="photoStatus" value="no_photo" onchange="togglePhotoUpload(this)"> No photo this month
+              </label>
+            </div>
+
+            <div class="conditional-block" id="photoUploadBlock">
+              <label for="photoFile" style="margin-bottom:8px;display:block;">Upload Photo</label>
+              <div class="upload-zone" id="uploadZone" onclick="document.getElementById('photoFile').click()">
+                <div class="upload-icon">📷</div>
+                <p>Click to browse or <strong>drag & drop</strong></p>
+                <p style="margin-top:4px;font-size:11px;">JPG, PNG, HEIC — max 10MB</p>
+                <input type="file" id="photoFile" accept="image/*" onchange="handleFileSelect(this)">
+              </div>
+              <div class="upload-preview" id="uploadPreview">
+                <span>✓</span>
+                <span id="uploadFileName">photo.jpg</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="field-divider">
+
+        <div class="field-row single">
+          <div class="field-group">
+            <label>Required Releases on File <span class="req">*</span></label>
+            <p class="hint" style="margin-bottom:10px;">Story cannot be published without these. Confirm before submitting.</p>
+            <div class="checkbox-group">
+              <label class="check-item"><input type="checkbox" id="rel1"> Signed photo &amp; story release from patient or legal representative</label>
+              <label class="check-item"><input type="checkbox" id="rel2"> HIPAA authorization for marketing use signed</label>
+              <label class="check-item"><input type="checkbox" id="rel3"> Patient/family approved to be quoted by name</label>
+            </div>
+            <div class="conditional-block visible" id="firstNameOnlyBlock" style="margin-top:10px;">
+              <label class="check-item"><input type="checkbox" id="rel4"> Patient/family prefers first name only or initials</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row single">
+          <div class="field-group">
+            <label for="doNotInclude">Anything We Should NOT Include?</label>
+            <textarea id="doNotInclude" rows="2" placeholder="Location, family situation, exact age, etc."></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 5: ADMISSIONS PANEL -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-number">5</div>
+        <div class="section-title">Facility Admissions Panel</div>
+      </div>
+      <div class="section-body">
+
+        <div class="info-banner">
+          ℹ️ <span>This information is published <b>with every story</b> so referrers and families can act immediately. Update only when something changes.</span>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="admissionsSearch">Admissions Contact — Name <span class="req">*</span></label>
+            <div class="search-wrap">
+              <input type="text" id="admissionsSearch" placeholder="Search admissions staff…" autocomplete="off" disabled>
+              <span class="search-icon">⌕</span>
+              <div class="autocomplete-list" id="admissionsList"></div>
+            </div>
+            <span class="hint" id="admissionsHint">Filtered to: Admissions Coordinator, Director, Nurse</span>
+          </div>
+          <div class="field-group">
+            <label for="admissionsTitle">Title</label>
+            <input type="text" id="admissionsTitle" placeholder="Auto-filled from roster" disabled>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="admissionsPhone">Direct Phone</label>
+            <input type="tel" id="admissionsPhone" placeholder="(555) 000-0000">
+          </div>
+          <div class="field-group">
+            <label for="admissionsEmail">Email</label>
+            <input type="email" id="admissionsEmail" placeholder="admissions@facility.com">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="afterHoursLine">After-Hours Line</label>
+            <input type="tel" id="afterHoursLine" placeholder="(555) 000-0000 (if different)">
+          </div>
+          <div class="field-group">
+            <label for="insuranceAccepted">Insurance Accepted</label>
+            <textarea id="insuranceAccepted" rows="2" placeholder="Medicare, Medicaid, Aetna, Cigna, UHC…"></textarea>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="admissionsHours">Admissions Office Hours</label>
+            <input type="text" id="admissionsHours" placeholder="e.g. Mon–Fri 8am–5pm">
+          </div>
+          <div class="field-group">
+            <label for="weekendAdmissions">Accept Weekend Admissions?</label>
+            <select id="weekendAdmissions">
+              <option value="">— Select —</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="Case by case">Case by case</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="afterHoursAdmissions">Accept After-Hours Admissions?</label>
+            <select id="afterHoursAdmissions">
+              <option value="">— Select —</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="Case by case">Case by case</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="responseTime">Typical Response Time to Inquiries</label>
+            <select id="responseTime">
+              <option value="">— Select —</option>
+              <option value="Within 1 hour">Within 1 hour</option>
+              <option value="Within 2 hours">Within 2 hours</option>
+              <option value="Within 4 hours">Within 4 hours</option>
+              <option value="Same day">Same day</option>
+              <option value="Next business day">Next business day</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row single">
+          <div class="field-group">
+            <label for="transferProcess">Transfer Process</label>
+            <textarea id="transferProcess" rows="2" placeholder="e.g. Call our admissions line. We respond to referrals within 2 hours and can typically accept transfers same-day or next-day."></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 6: OPTIONAL METRIC -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-number">6</div>
+        <div class="section-title">Optional — Facility Metric</div>
+      </div>
+      <div class="section-body">
+        <div class="field-row single">
+          <div class="field-group">
+            <label for="facilityMetric">Recent Credibility Stat (optional)</label>
+            <input type="text" id="facilityMetric" placeholder='e.g. "Arlington discharged 55 residents home this quarter"'>
+            <span class="hint">We'll feature one stat alongside the story.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end mainForm -->
+
+  <div id="successScreen" class="success-screen">
+    <div class="success-icon">✓</div>
+    <h2>Story submitted successfully!</h2>
+    <p>Your submission has been recorded and a PDF is being prepared. The marketing team will review it and may follow up within a few days.</p>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:20px;">
+      Sent to: stacy@mcoa.health · abby@mcoa.health · joey@mcoa.health · joyce@mcoa.health
+    </p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-primary" id="downloadPDFBtn" type="button">⬇ Download PDF Again</button>
+      <button class="btn btn-secondary" type="button" onclick="resetForm()">Submit Another Story</button>
+    </div>
+  </div>
+
+</div><!-- end form-container -->
+
+<div class="submit-bar">
+  <div class="submit-info">
+    <b>Submit by the 15th</b> · stacy@mcoa.health · abby@mcoa.health · joey@mcoa.health · joyce@mcoa.health
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <div class="loading-indicator" id="submitLoader">
+      <div class="spinner"></div>
+      <span>Submitting…</span>
+    </div>
+    <button class="btn btn-secondary" type="button" onclick="saveDraft()">Save Draft</button>
+    <button class="btn btn-primary" type="button" onclick="submitForm()">Submit Story →</button>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────────────
+
+// GitHub raw CSV URLs — update these if you rename or move the files
+const EMPLOYEES_CSV_URL  = "https://raw.githubusercontent.com/MCOAJoyceMartin/pureprogress-forms/refs/heads/main/employees.csv";
+const FACILITIES_CSV_URL = "https://raw.githubusercontent.com/MCOAJoyceMartin/pureprogress-forms/refs/heads/main/facilities.csv";
+
+// Google Apps Script URL for form submissions → Google Sheet → Power BI
+const GOOGLE_SHEET_URL = "YOUR_SUBMISSION_APPS_SCRIPT_URL_HERE";
+
+const ADMISSIONS_ROLES = [
+  "Admissions Coordinator",
+  "Admissions Director",
+  "Admissions Nurse (LVN)",
+  "Admissions Nurse (RN)"
+];
+
+// ─────────────────────────────────────────────
+// DATA STORE
+// ─────────────────────────────────────────────
+let allEmployees = [];
+let facilityMap  = {};
+let selectedFacility = "";
+
+// ─────────────────────────────────────────────
+// CSV PARSING HELPER
+// ─────────────────────────────────────────────
+function parseCSVText(text) {
+  const lines = text.trim().split("\n");
+  if (lines.length < 2) return { headers: [], rows: [] };
+  // Handle quoted fields
+  const splitLine = line => {
+    const result = [];
+    let cur = "", inQ = false;
+    for (let c of line) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { result.push(cur.trim()); cur = ""; }
+      else { cur += c; }
+    }
+    result.push(cur.trim());
+    return result;
+  };
+  const headers = splitLine(lines[0]);
+  const rows = lines.slice(1).map(l => splitLine(l));
+  return { headers, rows };
+}
+
+// ─────────────────────────────────────────────
+// LOAD DATA — fetches both CSVs from GitHub
+// ─────────────────────────────────────────────
+async function loadData() {
+  const bar = document.getElementById("dataStatusBar");
+  bar.className = "data-status loading";
+  bar.innerHTML = '<div class="spinner"></div> Loading facility and employee data…';
+
+  try {
+    const [empResp, facResp] = await Promise.all([
+      fetch(EMPLOYEES_CSV_URL),
+      fetch(FACILITIES_CSV_URL)
+    ]);
+    if (!empResp.ok) throw new Error("employees.csv not found (" + empResp.status + ")");
+    if (!facResp.ok) throw new Error("facilities.csv not found (" + facResp.status + ")");
+
+    const empText = await empResp.text();
+    const facText = await facResp.text();
+
+    parseAndProcess(empText, facText);
+
+    bar.className = "data-status loaded";
+    bar.innerHTML = "✓ " + allEmployees.length + " active employees loaded across " + Object.keys(facilityMap).length + " facilities";
+    setTimeout(() => bar.style.display = "none", 6000);
+
+  } catch(err) {
+    bar.className = "data-status error";
+    bar.innerHTML = "⚠ Could not load data: " + err.message;
+    loadDemoData();
+  }
+}
+
+// ─────────────────────────────────────────────
+// PARSE CSV TEXT → EMPLOYEE + FACILITY OBJECTS
+// ─────────────────────────────────────────────
+function parseAndProcess(empText, facText) {
+  // ── Parse employees ──
+  const { headers, rows } = parseCSVText(empText);
+  const idx = name => headers.findIndex(h => h.trim() === name);
+
+  const iName     = idx("Employee_Name");
+  const iFacility = idx("Payroll_Profile_Desc");
+  const iTitle    = idx("Job_Title_LA_Desc");
+  const iStatus   = idx("Employee_Status");
+  const iTerm     = idx("Termination_Date");
+  const iEmail    = idx("Work_Email");
+  const iPhone    = idx("Primary_Phone");
+
+  const employees = [];
+  for (const r of rows) {
+    const status = (r[iStatus] || "").trim().toLowerCase();
+    const term   = (r[iTerm]   || "").trim().toLowerCase();
+    // Active only, no termination date (ignore if term is blank, "n/a", or "0")
+    if (status !== "active") continue;
+    if (term !== "" && term !== "n/a" && term !== "0" && term !== "null") continue;
+    const name     = (r[iName]     || "").trim();
+    const facility = (r[iFacility] || "").trim();
+    const title    = (r[iTitle]    || "").trim();
+    if (!name || !facility) continue;
+    employees.push({
+      facility_name: facility,
+      employee_name: name,
+      job_title:     title,
+      status:        "Active",
+      work_email:    iEmail >= 0 ? (r[iEmail] || "").trim() : "",
+      phone:         iPhone >= 0 ? (r[iPhone] || "").trim() : ""
+    });
+  }
+
+  // ── Parse facilities (Payroll_Profile_Desc column) ──
+  const { headers: fHeaders, rows: fRows } = parseCSVText(facText);
+  const iFacName = fHeaders.findIndex(h => h.trim() === "Payroll_Profile_Desc");
+  const facilityNames = new Set();
+  if (iFacName >= 0) {
+    for (const r of fRows) {
+      const name = (r[iFacName] || "").trim();
+      if (name) facilityNames.add(name);
+    }
+  }
+
+  processEmployees(employees, facilityNames);
+}
+
+// ─────────────────────────────────────────────
+// DEMO FALLBACK
+// ─────────────────────────────────────────────
+function loadDemoData() {
+  const demo = [
+    {facility_name:"Sunridge Care Center",employee_name:"Maria Lopez",job_title:"Physical Therapist",status:"Active"},
+    {facility_name:"Sunridge Care Center",employee_name:"James Chen",job_title:"Occupational Therapist",status:"Active"},
+    {facility_name:"Sunridge Care Center",employee_name:"Priya Patel",job_title:"Admissions Coordinator",status:"Active"},
+    {facility_name:"Sunridge Care Center",employee_name:"Tom Walsh",job_title:"Admissions Director",status:"Active"},
+    {facility_name:"Sunridge Care Center",employee_name:"Rachel Kim",job_title:"Speech-Language Pathologist",status:"Active"},
+    {facility_name:"Sunridge Care Center",employee_name:"Dan Torres",job_title:"Admissions Nurse (LVN)",status:"Active"},
+    {facility_name:"Oakwood Rehab",employee_name:"David Brooks",job_title:"Physical Therapist",status:"Active"},
+    {facility_name:"Oakwood Rehab",employee_name:"Sara Nguyen",job_title:"Admissions Coordinator",status:"Active"},
+    {facility_name:"Oakwood Rehab",employee_name:"Carlos Ruiz",job_title:"Admissions Nurse (LVN)",status:"Active"},
+    {facility_name:"Oakwood Rehab",employee_name:"Amy Foster",job_title:"Occupational Therapist",status:"Active"},
+    {facility_name:"Oakwood Rehab",employee_name:"Nina Shah",job_title:"Admissions Nurse (RN)",status:"Active"},
+    {facility_name:"Maplewood Health",employee_name:"Kevin Stone",job_title:"Admissions Director",status:"Active"},
+    {facility_name:"Maplewood Health",employee_name:"Linda Park",job_title:"Physical Therapist",status:"Active"},
+    {facility_name:"Maplewood Health",employee_name:"Greg Nash",job_title:"Admissions Nurse (RN)",status:"Active"},
+  ];
+  processEmployees(demo, null);
+}
+
+// ─────────────────────────────────────────────
+// PROCESS — builds facilityMap and populates dropdown
+// facilityNames: Set of names from FacilityName sheet (used to ensure
+// all facilities appear in dropdown even if no active employees yet)
+// ─────────────────────────────────────────────
+function processEmployees(employees, facilityNames) {
+  allEmployees = employees;
+  facilityMap  = {};
+
+  // Seed from FacilityName sheet first so all facilities appear
+  if (facilityNames) {
+    facilityNames.forEach(f => { facilityMap[f] = []; });
+  }
+
+  // Add employees into their facility buckets
+  employees.forEach(e => {
+    const fac = (e.facility_name || "").trim();
+    if (!fac) return;
+    if (!facilityMap[fac]) facilityMap[fac] = [];
+    facilityMap[fac].push(e);
+  });
+
+  populateFacilityDropdown();
+}
+
+function populateFacilityDropdown() {
+  const sel = document.getElementById("facilityName");
+  Object.keys(facilityMap).sort().forEach(f => {
+    const opt = document.createElement("option");
+    opt.value = f;
+    opt.textContent = f;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener("change", onFacilityChange);
+}
+
+// ─────────────────────────────────────────────
+// FACILITY CHANGE → ENABLE EMPLOYEE FIELDS
+// ─────────────────────────────────────────────
+function onFacilityChange() {
+  selectedFacility = this.value;
+  const sbSearch = document.getElementById("submittedBySearch");
+  const thSearch = document.getElementById("therapistSearch");
+  const adSearch = document.getElementById("admissionsSearch");
+
+  if (selectedFacility) {
+    sbSearch.disabled = false;
+    sbSearch.placeholder = "Type to search employees…";
+    thSearch.disabled = false;
+    thSearch.placeholder = "Type to search therapists…";
+    adSearch.disabled = false;
+    adSearch.placeholder = "Type to search admissions staff…";
+    document.getElementById("therapistHint").textContent = "Showing employees at " + selectedFacility;
+  } else {
+    [sbSearch, thSearch, adSearch].forEach(el => {
+      el.disabled = true;
+      el.value = "";
+    });
+    ["submittedByRole","therapistRole","admissionsTitle"].forEach(id => {
+      document.getElementById(id).value = "";
+      document.getElementById(id).classList.remove("autofilled");
+    });
+  }
+}
+
+// ─────────────────────────────────────────────
+// AUTOCOMPLETE ENGINE
+// Shows all employees on click, filters as you type
+// ─────────────────────────────────────────────
+function setupAutocomplete(inputId, listId, roleOutputId, filterFn) {
+  const input = document.getElementById(inputId);
+  const list  = document.getElementById(listId);
+
+  function renderList(q) {
+    list.innerHTML = "";
+    if (!selectedFacility) { list.classList.remove("show"); return; }
+
+    const facility = facilityMap[selectedFacility] || [];
+    const filtered = facility.filter(e => {
+      const nameMatch = !q || e.employee_name.toLowerCase().includes(q.toLowerCase().trim());
+      const roleMatch = !filterFn || filterFn(e.job_title);
+      return nameMatch && roleMatch;
+    });
+
+    if (!filtered.length) {
+      const empty = document.createElement("div");
+      empty.className = "autocomplete-item";
+      empty.style.color = "var(--text3)";
+      empty.style.fontStyle = "italic";
+      empty.textContent = q ? "No matches found" : "No employees found for this facility";
+      list.appendChild(empty);
+      list.classList.add("show");
+      return;
+    }
+
+    filtered.slice(0, 50).forEach(emp => {
+      const item = document.createElement("div");
+      item.className = "autocomplete-item";
+      item.innerHTML = `${emp.employee_name}<span class="role-hint">${emp.job_title}</span>`;
+      item.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        input.value = emp.employee_name;
+        const roleEl = document.getElementById(roleOutputId);
+        roleEl.value = emp.job_title;
+        roleEl.classList.add("autofilled");
+        list.classList.remove("show");
+      });
+      list.appendChild(item);
+    });
+    list.classList.add("show");
+  }
+
+  // Show all on focus
+  input.addEventListener("focus", () => renderList(input.value));
+
+  // Filter as you type
+  input.addEventListener("input", () => renderList(input.value));
+
+  // Hide on blur
+  input.addEventListener("blur", () => {
+    setTimeout(() => list.classList.remove("show"), 200);
+  });
+}
+
+// ─────────────────────────────────────────────
+// TOGGLE HELPERS
+// ─────────────────────────────────────────────
+function toggleContact(radio) {
+  document.getElementById("contactPhone").classList.remove("visible");
+  document.getElementById("contactEmail").classList.remove("visible");
+  if (radio.value === "phone") document.getElementById("contactPhone").classList.add("visible");
+  if (radio.value === "email") document.getElementById("contactEmail").classList.add("visible");
+}
+
+function toggleQuoteSource(radio) {
+  document.getElementById("quoteManual").classList.remove("visible");
+  document.getElementById("quoteTherapist").classList.remove("visible");
+  if (radio.value === "patient" || radio.value === "family") {
+    document.getElementById("quoteManual").classList.add("visible");
+  } else if (radio.value === "therapist") {
+    document.getElementById("quoteTherapist").classList.add("visible");
+  }
+}
+
+function togglePhotoUpload(radio) {
+  const block = document.getElementById("photoUploadBlock");
+  if (radio.value === "patient_photo" || radio.value === "team_photo") {
+    block.classList.add("visible");
+  } else {
+    block.classList.remove("visible");
+  }
+}
+
+function toggleOtherDestination(sel) {
+  const el = document.getElementById("dischargeOther");
+  if (sel.value === "Other") el.classList.add("show");
+  else el.classList.remove("show");
+}
+
+function toggleOtherTag(cb) {
+  const el = document.getElementById("tagOtherSpecify");
+  if (cb.checked) el.classList.add("show");
+  else el.classList.remove("show");
+}
+
+function toggleTag(label) {
+  const cb = label.querySelector("input");
+  if (cb.checked) label.classList.add("checked");
+  else label.classList.remove("checked");
+}
+
+function updateChar(textarea, countId) {
+  document.getElementById(countId).textContent = textarea.value.length;
+}
+
+// ─────────────────────────────────────────────
+// FILE UPLOAD
+// ─────────────────────────────────────────────
+function handleFileSelect(input) {
+  const file = input.files[0];
+  if (file) {
+    const preview = document.getElementById("uploadPreview");
+    document.getElementById("uploadFileName").textContent = file.name + " (" + (file.size / 1024).toFixed(0) + " KB)";
+    preview.classList.add("show");
+  }
+}
+
+const uploadZone = document.getElementById("uploadZone");
+uploadZone.addEventListener("dragover", e => { e.preventDefault(); uploadZone.classList.add("dragover"); });
+uploadZone.addEventListener("dragleave", () => uploadZone.classList.remove("dragover"));
+uploadZone.addEventListener("drop", e => {
+  e.preventDefault();
+  uploadZone.classList.remove("dragover");
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith("image/")) {
+    document.getElementById("photoFile").files = e.dataTransfer.files;
+    handleFileSelect(document.getElementById("photoFile"));
+  }
+});
+
+// ─────────────────────────────────────────────
+// PROGRESS BAR
+// ─────────────────────────────────────────────
+function updateProgress() {
+  const required = document.querySelectorAll("[required]");
+  let filled = 0;
+  required.forEach(el => {
+    if (el.value && el.value.trim()) filled++;
+  });
+  const pct = required.length ? Math.round((filled / required.length) * 100) : 0;
+  document.getElementById("progressFill").style.width = pct + "%";
+}
+document.addEventListener("input", updateProgress);
+document.addEventListener("change", updateProgress);
+
+// ─────────────────────────────────────────────
+// COLLECT FORM DATA
+// ─────────────────────────────────────────────
+function collectData() {
+  const tags = Array.from(document.querySelectorAll("#tagGrid input:checked")).map(cb => cb.value);
+  if (tags.includes("other")) tags.push(document.getElementById("tagOtherVal").value);
+  const releases = {
+    photo_story_release: document.getElementById("rel1").checked,
+    hipaa_auth: document.getElementById("rel2").checked,
+    quoted_by_name: document.getElementById("rel3").checked,
+    first_name_only: document.getElementById("rel4").checked
+  };
+  const quoteSource = document.querySelector("[name='quoteSource']:checked");
+  const contactMethod = document.querySelector("[name='contactMethod']:checked");
+  const photoStatus = document.querySelector("[name='photoStatus']:checked");
+  const discharge = document.getElementById("dischargeDestination").value;
+
+  return {
+    timestamp: new Date().toISOString(),
+    facility_name: document.getElementById("facilityName").value,
+    date_submitted: document.getElementById("dateSubmitted").value,
+    submitted_by_name: document.getElementById("submittedBySearch").value,
+    submitted_by_role: document.getElementById("submittedByRole").value,
+    contact_method: contactMethod ? contactMethod.value : "",
+    contact_phone: document.getElementById("contactPhoneVal").value,
+    contact_email: document.getElementById("contactEmailVal").value,
+    q1_hook: document.getElementById("q1Hook").value,
+    q2_diagnosis: document.getElementById("q2Diagnosis").value,
+    length_of_stay: document.getElementById("lengthOfStay").value,
+    discharge_destination: discharge === "Other"
+      ? document.getElementById("dischargeOtherVal").value
+      : discharge,
+    functional_gains: document.getElementById("functionalGains").value,
+    q4_quote: document.getElementById("q4Quote").value,
+    quote_source: quoteSource ? quoteSource.value : "",
+    quote_attr_name: document.getElementById("quoteAttrName").value,
+    quote_attr_relationship: document.getElementById("quoteRelationship").value,
+    therapist_name: document.getElementById("therapistSearch").value,
+    therapist_role: document.getElementById("therapistRole").value,
+    q5_therapy_team: document.getElementById("q5TherapyTeam").value,
+    story_tags: tags.join(", "),
+    photo_status: photoStatus ? photoStatus.value : "",
+    releases: JSON.stringify(releases),
+    do_not_include: document.getElementById("doNotInclude").value,
+    admissions_contact: document.getElementById("admissionsSearch").value,
+    admissions_title: document.getElementById("admissionsTitle").value,
+    admissions_phone: document.getElementById("admissionsPhone").value,
+    admissions_email: document.getElementById("admissionsEmail").value,
+    after_hours_line: document.getElementById("afterHoursLine").value,
+    insurance_accepted: document.getElementById("insuranceAccepted").value,
+    admissions_hours: document.getElementById("admissionsHours").value,
+    weekend_admissions: document.getElementById("weekendAdmissions").value,
+    after_hours_admissions: document.getElementById("afterHoursAdmissions").value,
+    response_time: document.getElementById("responseTime").value,
+    transfer_process: document.getElementById("transferProcess").value,
+    facility_metric: document.getElementById("facilityMetric").value
+  };
+}
+
+// ─────────────────────────────────────────────
+// EMAIL RECIPIENTS
+// ─────────────────────────────────────────────
+const SUBMISSION_RECIPIENTS = [
+  "stacy@mcoa.health",
+  "abby@mcoa.health",
+  "joey@mcoa.health",
+  "joyce@mcoa.health"
+];
+
+// ─────────────────────────────────────────────
+// PDF GENERATION
+// ─────────────────────────────────────────────
+function buildPDFContent(data) {
+  const logo = document.querySelector(".page-header img");
+  const logoSrc = logo ? logo.src : "";
+  const logoHtml = logoSrc
+    ? `<img src="${logoSrc}" style="height:50px;width:auto;margin-bottom:4px;">`
+    : "";
+
+  const row = (label, val) => val
+    ? `<tr><td style="font-weight:600;color:#5F5E5A;padding:5px 10px 5px 0;width:38%;vertical-align:top;font-size:12px;">${label}</td><td style="padding:5px 0;font-size:13px;color:#2C2C2A;">${val || "—"}</td></tr>`
+    : "";
+
+  const section = (title, rows) => `
+    <div style="margin-bottom:20px;">
+      <div style="background:#1D5F8A;color:white;padding:6px 12px;border-radius:5px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">${title}</div>
+      <table style="width:100%;border-collapse:collapse;">${rows}</table>
+    </div>`;
+
+  const releases = (() => {
+    try { return JSON.parse(data.releases || "{}"); } catch(e) { return {}; }
+  })();
+  const releaseList = [
+    releases.photo_story_release ? "✓ Photo & story release signed" : "",
+    releases.hipaa_auth           ? "✓ HIPAA authorization signed"   : "",
+    releases.quoted_by_name       ? "✓ Approved to quote by name"    : "",
+    releases.first_name_only      ? "✓ Prefers first name / initials": ""
+  ].filter(Boolean).join("<br>");
+
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <style>
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 32px 40px; color: #2C2C2A; background: white; }
+    @media print { body { padding: 20px 28px; } }
+  </style>
+  </head><body>
+  <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #1D5F8A;padding-bottom:14px;margin-bottom:22px;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      ${logoHtml}
+      <div>
+        <div style="font-size:18px;font-weight:700;color:#1D5F8A;">PureProgress</div>
+        <div style="font-size:12px;color:#5F5E5A;">Therapy Success Story Intake</div>
+      </div>
+    </div>
+    <div style="text-align:right;font-size:11px;color:#888780;">
+      <div>Submitted: ${data.date_submitted || new Date().toLocaleDateString()}</div>
+      <div>Facility: ${data.facility_name || "—"}</div>
+    </div>
+  </div>
+
+  ${section("1 · Submission Info", `
+    ${row("Facility", data.facility_name)}
+    ${row("Date Submitted", data.date_submitted)}
+    ${row("Submitted By", data.submitted_by_name + (data.submitted_by_role ? " &nbsp;·&nbsp; " + data.submitted_by_role : ""))}
+    ${row("Best Contact", data.contact_method === "phone" ? "📞 " + data.contact_phone : "✉ " + data.contact_email)}
+  `)}
+
+  ${section("2 · The Patient Story", `
+    ${row("Hook / What Stood Out", data.q1_hook)}
+    ${row("Diagnosis / Condition", data.q2_diagnosis)}
+    ${row("Length of Stay", data.length_of_stay ? data.length_of_stay + " days" : "")}
+    ${row("Discharge Destination", data.discharge_destination)}
+    ${row("Functional Gains", data.functional_gains)}
+    ${row("Quote", data.q4_quote ? '"' + data.q4_quote + '"' : "")}
+    ${row("Quote From", data.quote_source === "therapist"
+        ? (data.therapist_name || "") + (data.therapist_role ? " (" + data.therapist_role + ")" : "")
+        : (data.quote_attr_name || "") + (data.quote_attr_relationship ? " — " + data.quote_attr_relationship : ""))}
+    ${row("Therapy Team", data.q5_therapy_team)}
+  `)}
+
+  ${section("3 · Story Tags", `
+    ${row("Tags", data.story_tags)}
+  `)}
+
+  ${section("4 · Photo & Permissions", `
+    ${row("Photo", data.photo_status === "patient_photo" ? "Patient photo attached"
+                  : data.photo_status === "team_photo"   ? "Team/facility photo attached"
+                  : "No photo this month")}
+    ${row("Releases on File", releaseList || "—")}
+    ${row("Do Not Include", data.do_not_include)}
+  `)}
+
+  ${section("5 · Facility Admissions Panel", `
+    ${row("Admissions Contact", data.admissions_contact + (data.admissions_title ? " &nbsp;·&nbsp; " + data.admissions_title : ""))}
+    ${row("Direct Phone", data.admissions_phone)}
+    ${row("Email", data.admissions_email)}
+    ${row("After-Hours Line", data.after_hours_line)}
+    ${row("Insurance Accepted", data.insurance_accepted)}
+    ${row("Office Hours", data.admissions_hours)}
+    ${row("Weekend Admissions", data.weekend_admissions)}
+    ${row("After-Hours Admissions", data.after_hours_admissions)}
+    ${row("Typical Response Time", data.response_time)}
+    ${row("Transfer Process", data.transfer_process)}
+  `)}
+
+  ${data.facility_metric ? section("6 · Facility Metric", `${row("Stat", data.facility_metric)}`) : ""}
+
+  <div style="margin-top:28px;border-top:1px solid #D3D1C7;padding-top:12px;font-size:10px;color:#888780;display:flex;justify-content:space-between;">
+    <span>PureProgress Therapy Success Story Intake · Confidential</span>
+    <span>Generated ${new Date().toLocaleString()}</span>
+  </div>
+  </body></html>`;
+}
+
+function generateAndDownloadPDF(data) {
+  const html = buildPDFContent(data);
+  const blob = new Blob([html], { type: "text/html" });
+  const url  = URL.createObjectURL(blob);
+  const win  = window.open(url, "_blank");
+  if (win) {
+    win.onload = () => {
+      setTimeout(() => {
+        win.print();
+        URL.revokeObjectURL(url);
+      }, 600);
+    };
+  } else {
+    // Fallback: direct download of HTML (user can print-to-PDF)
+    const a = document.createElement("a");
+    a.href = url;
+    const fname = (data.facility_name || "submission").replace(/\s+/g,"_");
+    a.download = `PureProgress_${fname}_${data.date_submitted || "form"}.html`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+}
+
+// ─────────────────────────────────────────────
+// EMAIL NOTIFICATION (mailto fallback)
+// ─────────────────────────────────────────────
+function openEmailNotification(data) {
+  const subject = encodeURIComponent(
+    `PureProgress Success Story — ${data.facility_name} — ${data.date_submitted}`
+  );
+  const body = encodeURIComponent(
+    `A new therapy success story has been submitted.\n\n` +
+    `Facility: ${data.facility_name}\n` +
+    `Submitted by: ${data.submitted_by_name} (${data.submitted_by_role})\n` +
+    `Date: ${data.date_submitted}\n` +
+    `Diagnosis: ${data.q2_diagnosis}\n` +
+    `Discharge to: ${data.discharge_destination}\n\n` +
+    `Hook:\n${data.q1_hook}\n\n` +
+    `Functional Gains:\n${data.functional_gains}\n\n` +
+    `Quote:\n"${data.q4_quote}"\n\n` +
+    `— See attached PDF for full submission details.`
+  );
+  const to = SUBMISSION_RECIPIENTS.join(",");
+  window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+}
+
+// ─────────────────────────────────────────────
+// SUBMIT
+// ─────────────────────────────────────────────
+async function submitForm() {
+  const facility  = document.getElementById("facilityName").value;
+  const date      = document.getElementById("dateSubmitted").value;
+  const submitter = document.getElementById("submittedBySearch").value;
+  if (!facility || !date || !submitter) {
+    alert("Please fill in the required fields: Facility Name, Date Submitted, and Submitted By.");
+    return;
+  }
+
+  const loader = document.getElementById("submitLoader");
+  loader.classList.add("show");
+
+  const data = collectData();
+
+  // Step 1 — post to Google Sheet (if configured)
+  if (!GOOGLE_SHEET_URL.startsWith("YOUR_")) {
+    try {
+      await fetch(GOOGLE_SHEET_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+    } catch(e) {
+      console.warn("Google Sheet POST failed:", e.message);
+    }
+  }
+
+  loader.classList.remove("show");
+
+  // Step 2 — show success screen
+  document.getElementById("mainForm").style.display = "none";
+  document.getElementById("successScreen").classList.add("show");
+  window.scrollTo(0, 0);
+
+  // Step 3 — generate PDF (opens print dialog in new tab)
+  setTimeout(() => generateAndDownloadPDF(data), 400);
+
+  // Step 4 — open mailto with all recipients pre-filled
+  // Small delay so the PDF tab opens first
+  setTimeout(() => openEmailNotification(data), 1800);
+}
+
+function saveDraft() {
+  try {
+    const data = collectData();
+    localStorage.setItem("pureprogress_draft", JSON.stringify(data));
+    alert("Draft saved locally. It will be here if you refresh the page.");
+  } catch(e) {
+    alert("Could not save draft.");
+  }
+}
+
+function loadDraft() {
+  try {
+    const saved = localStorage.getItem("pureprogress_draft");
+    if (!saved) return;
+    // Could auto-populate fields here
+  } catch(e) {}
+}
+
+function resetForm() {
+  document.getElementById("mainForm").style.display = "block";
+  document.getElementById("successScreen").classList.remove("show");
+  document.querySelectorAll("input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],textarea").forEach(el => el.value = "");
+  document.querySelectorAll("select").forEach(el => el.selectedIndex = 0);
+  document.querySelectorAll("input[type=checkbox],input[type=radio]").forEach(el => el.checked = false);
+  document.querySelectorAll(".autofilled").forEach(el => el.classList.remove("autofilled"));
+  document.querySelectorAll(".conditional-block.visible").forEach(el => el.classList.remove("visible"));
+  document.querySelectorAll(".tag-item.checked").forEach(el => el.classList.remove("checked"));
+  document.getElementById("progressFill").style.width = "0%";
+  window.scrollTo(0, 0);
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("dateSubmitted").value = new Date().toISOString().slice(0,10);
+  loadData().then(() => {
+    setupAutocomplete("submittedBySearch", "submittedByList", "submittedByRole", null);
+    setupAutocomplete("therapistSearch", "therapistList", "therapistRole",
+      (role) => ["Physical Therapist","Occupational Therapist","Speech-Language Pathologist","PT","OT","SLP","COTA","PTA"].some(r => role.includes(r))
+    );
+    setupAutocomplete("admissionsSearch", "admissionsList", "admissionsTitle",
+      (role) => ADMISSIONS_ROLES.some(r => role.toLowerCase().includes(r.toLowerCase().split(" ")[1]))
+    );
+  });
+  loadDraft();
+  updateProgress();
+
+  // "Download PDF Again" button on success screen
+  let _lastData = null;
+  const origSubmit = window.submitForm;
+  // Intercept to store last data for re-download
+  const pdfBtn = document.getElementById("downloadPDFBtn");
+  if (pdfBtn) {
+    pdfBtn.addEventListener("click", () => {
+      if (_lastData) generateAndDownloadPDF(_lastData);
+    });
+  }
+  // Patch collectData to cache last submission
+  const _origCollect = collectData;
+  window._getLastData = () => _lastData;
+  const _origSubmitForm = submitForm;
+  window.submitForm = async function() {
+    await _origSubmitForm();
+    _lastData = collectData ? collectData() : null;
+  };
+});
+</script>
+</body>
+</html>
