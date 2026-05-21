@@ -483,22 +483,7 @@
   .data-status.loaded { background: var(--accent-light); color: var(--accent); }
   .data-status.error { background: var(--danger-light); color: var(--danger); }
 
-  .config-note {
-    background: #FFF3CD;
-    border: 1px solid #FFEAA7;
-    border-radius: var(--radius-sm);
-    padding: 12px 16px;
-    font-size: 12px;
-    color: #856404;
-    margin-bottom: 20px;
-  }
-  .config-note code {
-    background: rgba(0,0,0,0.08);
-    padding: 1px 5px;
-    border-radius: 3px;
-    font-family: monospace;
-    font-size: 11px;
-  }
+
 
   .other-specify {
     display: none;
@@ -521,12 +506,7 @@
 </div>
 
 <div class="form-container">
-  <div class="config-note">
-    ⚙️ <strong>Setup required (2 steps):</strong>
-    <strong>1)</strong> Host this file on your SharePoint site so users are already signed in when they open it.
-    <strong>2)</strong> Deploy the submission Apps Script from <strong>pureprogress_appsscript_setup.html</strong> and paste the URL as <code>GOOGLE_SHEET_URL</code> in the script block below.
-    No Azure, no other configuration needed — the roster loads automatically via SharePoint REST API.
-  </div>
+
 
   <div id="dataStatusBar" class="data-status loading">
     <div class="spinner"></div>
@@ -975,24 +955,12 @@
 // CONFIG
 // ─────────────────────────────────────────────
 
-// SharePoint REST API — no Azure needed.
-// The form uses the user's existing Microsoft 365 browser session (cookies)
-// so no extra login is required as long as the form is hosted on SharePoint
-// or the user is already signed into mmcoallc.sharepoint.com.
-
-// Your SharePoint site root (no trailing slash)
-const SP_SITE = "https://jadehealthcare-my.sharepoint.com/personal/joyce_purehlth_com";
-
-// Drive item ID from your file's URL (the GUID in sourcedoc=)
-const SP_FILE_ID = "A949E2D1-3F48-48AE-B055-56ADD5B4BF00";
-
-// Worksheet names — must match exactly
-const WORKSHEET_EMPLOYEES  = "EmployeeRosterJT_NEW";
-const WORKSHEET_FACILITIES = "FacilityName";
+// GitHub raw CSV URLs — update these if you rename or move the files
+const EMPLOYEES_CSV_URL  = "https://raw.githubusercontent.com/MCOAJoyceMartin/pureprogress-forms/refs/heads/main/employees.csv";
+const FACILITIES_CSV_URL = "https://raw.githubusercontent.com/MCOAJoyceMartin/pureprogress-forms/refs/heads/main/facilities.csv";
 
 // Google Apps Script URL for form submissions → Google Sheet → Power BI
-// See pureprogress_appsscript_setup.html for the script to deploy
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwStQcSV1BJJcn1ZZ1QQGz64J6nWvBep-Hs4VroZC03oj6gbDdxoHbRNw2CtmojDCC3/exec";
+const GOOGLE_SHEET_URL = "YOUR_SUBMISSION_APPS_SCRIPT_URL_HERE";
 
 const ADMISSIONS_ROLES = [
   "Admissions Coordinator",
@@ -1009,78 +977,67 @@ let facilityMap  = {};
 let selectedFacility = "";
 
 // ─────────────────────────────────────────────
-// SHAREPOINT REST API HELPERS
+// CSV PARSING HELPER
 // ─────────────────────────────────────────────
-// SharePoint's Excel REST API endpoint pattern:
-// {site}/_api/v2.0/drives/{driveId}/items/{itemId}:/...:/workbook/worksheets/{sheet}/usedRange
-// We use the simpler /_api/v2.1 "me/drive" path since the file is in a personal OneDrive for Business.
-// The browser sends the user's SharePoint session cookie automatically — no token needed.
-
-async function spFetch(url) {
-  const resp = await fetch(url, {
-    credentials: "include",   // sends existing SharePoint session cookie
-    headers: { "Accept": "application/json;odata=verbose" }
-  });
-  if (resp.status === 401) throw new Error("NOT_SIGNED_IN");
-  if (!resp.ok) throw new Error("SP_ERROR_" + resp.status);
-  return resp.json();
+function parseCSVText(text) {
+  const lines = text.trim().split("\n");
+  if (lines.length < 2) return { headers: [], rows: [] };
+  // Handle quoted fields
+  const splitLine = line => {
+    const result = [];
+    let cur = "", inQ = false;
+    for (let c of line) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { result.push(cur.trim()); cur = ""; }
+      else { cur += c; }
+    }
+    result.push(cur.trim());
+    return result;
+  };
+  const headers = splitLine(lines[0]);
+  const rows = lines.slice(1).map(l => splitLine(l));
+  return { headers, rows };
 }
 
-// Build the Excel REST URL using the file's item ID
-// SharePoint personal site → /_api/v2.0/me/drive/items/{id}/workbook/...
-function excelUrl(sheet, range) {
-  return `${SP_SITE}/_api/v2.0/me/drive/items/${SP_FILE_ID}/workbook/worksheets('${encodeURIComponent(sheet)}')/${range}`;
-}
-
 // ─────────────────────────────────────────────
-// LOAD DATA
+// LOAD DATA — fetches both CSVs from GitHub
 // ─────────────────────────────────────────────
 async function loadData() {
   const bar = document.getElementById("dataStatusBar");
   bar.className = "data-status loading";
-  bar.innerHTML = '<div class="spinner"></div> Loading roster from SharePoint…';
+  bar.innerHTML = '<div class="spinner"></div> Loading facility and employee data…';
 
   try {
-    // Fetch used range from employee worksheet
-    const url  = excelUrl(WORKSHEET_EMPLOYEES, "usedRange");
-    const data = await spFetch(url);
+    const [empResp, facResp] = await Promise.all([
+      fetch(EMPLOYEES_CSV_URL),
+      fetch(FACILITIES_CSV_URL)
+    ]);
+    if (!empResp.ok) throw new Error("employees.csv not found (" + empResp.status + ")");
+    if (!facResp.ok) throw new Error("facilities.csv not found (" + facResp.status + ")");
 
-    // The REST API wraps values in d.values (verbose) or directly as .values
-    const rows = (data.d && data.d.values) ? data.d.values
-               : data.values ? data.values
-               : null;
-    if (!rows || rows.length < 2) throw new Error("EMPTY_SHEET");
+    const empText = await empResp.text();
+    const facText = await facResp.text();
 
-    parseAndProcess(rows);
+    parseAndProcess(empText, facText);
+
     bar.className = "data-status loaded";
-    bar.innerHTML = "✓ Roster loaded from SharePoint (" + allEmployees.length + " active employees)";
+    bar.innerHTML = "✓ " + allEmployees.length + " active employees loaded across " + Object.keys(facilityMap).length + " facilities";
     setTimeout(() => bar.style.display = "none", 3500);
 
   } catch(err) {
-    if (err.message === "NOT_SIGNED_IN") {
-      bar.className = "data-status error";
-      bar.innerHTML = `
-        ⚠ You need to be signed into Microsoft 365 to load the roster.
-        <a href="https://mmcoallc-my.sharepoint.com" target="_blank"
-           style="color:inherit;font-weight:600;margin-left:6px;text-decoration:underline;">
-          Sign in here →
-        </a>
-        &nbsp;then refresh this page.`;
-    } else {
-      bar.className = "data-status error";
-      bar.innerHTML = "⚠ Could not load roster (" + err.message + "). Showing demo data.";
-      loadDemoData();
-    }
+    bar.className = "data-status error";
+    bar.innerHTML = "⚠ Could not load data: " + err.message;
+    loadDemoData();
   }
 }
 
 // ─────────────────────────────────────────────
-// PARSE EXCEL ROWS → EMPLOYEE OBJECTS
+// PARSE CSV TEXT → EMPLOYEE + FACILITY OBJECTS
 // ─────────────────────────────────────────────
-function parseAndProcess(rows) {
-  // Row 0 is the header row
-  const headers = rows[0].map(h => (h || "").toString().trim());
-  const idx = name => headers.indexOf(name);
+function parseAndProcess(empText, facText) {
+  // ── Parse employees ──
+  const { headers, rows } = parseCSVText(empText);
+  const idx = name => headers.findIndex(h => h.trim() === name);
 
   const iName     = idx("Employee_Name");
   const iFacility = idx("Payroll_Profile_Desc");
@@ -1091,30 +1048,40 @@ function parseAndProcess(rows) {
   const iPhone    = idx("Primary_Phone");
 
   const employees = [];
-  for (let i = 1; i < rows.length; i++) {
-    const r       = rows[i];
-    const status  = (r[iStatus] || "").toString().trim().toLowerCase();
-    const term    = (r[iTerm]   || "").toString().trim();
-    // Active only, no termination date
+  for (const r of rows) {
+    const status = (r[iStatus] || "").trim().toLowerCase();
+    const term   = (r[iTerm]   || "").trim();
     if (status !== "active" || term !== "") continue;
-    const name     = (r[iName]     || "").toString().trim();
-    const facility = (r[iFacility] || "").toString().trim();
-    const title    = (r[iTitle]    || "").toString().trim();
+    const name     = (r[iName]     || "").trim();
+    const facility = (r[iFacility] || "").trim();
+    const title    = (r[iTitle]    || "").trim();
     if (!name || !facility) continue;
     employees.push({
       facility_name: facility,
       employee_name: name,
       job_title:     title,
       status:        "Active",
-      work_email:    iEmail >= 0 ? (r[iEmail] || "").toString().trim() : "",
-      phone:         iPhone >= 0 ? (r[iPhone] || "").toString().trim() : ""
+      work_email:    iEmail >= 0 ? (r[iEmail] || "").trim() : "",
+      phone:         iPhone >= 0 ? (r[iPhone] || "").trim() : ""
     });
   }
-  processEmployees(employees);
+
+  // ── Parse facilities (Payroll_Profile_Desc column) ──
+  const { headers: fHeaders, rows: fRows } = parseCSVText(facText);
+  const iFacName = fHeaders.findIndex(h => h.trim() === "Payroll_Profile_Desc");
+  const facilityNames = new Set();
+  if (iFacName >= 0) {
+    for (const r of fRows) {
+      const name = (r[iFacName] || "").trim();
+      if (name) facilityNames.add(name);
+    }
+  }
+
+  processEmployees(employees, facilityNames);
 }
 
 // ─────────────────────────────────────────────
-// DEMO FALLBACK (used only if SharePoint fails)
+// DEMO FALLBACK
 // ─────────────────────────────────────────────
 function loadDemoData() {
   const demo = [
@@ -1133,18 +1100,31 @@ function loadDemoData() {
     {facility_name:"Maplewood Health",employee_name:"Linda Park",job_title:"Physical Therapist",status:"Active"},
     {facility_name:"Maplewood Health",employee_name:"Greg Nash",job_title:"Admissions Nurse (RN)",status:"Active"},
   ];
-  processEmployees(demo);
+  processEmployees(demo, null);
 }
 
-function processEmployees(employees) {
+// ─────────────────────────────────────────────
+// PROCESS — builds facilityMap and populates dropdown
+// facilityNames: Set of names from FacilityName sheet (used to ensure
+// all facilities appear in dropdown even if no active employees yet)
+// ─────────────────────────────────────────────
+function processEmployees(employees, facilityNames) {
   allEmployees = employees;
   facilityMap  = {};
+
+  // Seed from FacilityName sheet first so all facilities appear
+  if (facilityNames) {
+    facilityNames.forEach(f => { facilityMap[f] = []; });
+  }
+
+  // Add employees into their facility buckets
   employees.forEach(e => {
     const fac = (e.facility_name || "").trim();
     if (!fac) return;
     if (!facilityMap[fac]) facilityMap[fac] = [];
     facilityMap[fac].push(e);
   });
+
   populateFacilityDropdown();
 }
 
