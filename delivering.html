@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivering PUREcovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand: #1D5F8A;
+  --brand-dark: #0E3A5C;
+  --brand-light: #E6F1FB;
+  --accent: #0F6E56;
+  --gold: #C9960C;
+  --surface: #FFFFFF;
+  --surface2: #F7F8FA;
+  --border: #D3D1C7;
+  --text: #1A1A18;
+  --text2: #5A5956;
+  --text3: #9A9894;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #EDF1F7;
+  color: var(--text);
+  font-size: 14px;
+}
+
+/* ── TOOLBAR ── */
+.toolbar {
+  background: var(--brand-dark);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--brand);
+}
+.toolbar-title { color: white; font-weight: 700; font-size: 14px; margin-right: 8px; }
+.btn {
+  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-white { background: white; color: var(--brand-dark); }
+.btn-white:hover { background: var(--brand-light); }
+.btn-gold { background: var(--gold); color: white; }
+.btn-gold:hover { background: #a87a0a; }
+.btn-green { background: var(--accent); color: white; }
+.btn-green:hover { background: #0a5a45; }
+.btn-ghost { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.2); }
+.btn-ghost:hover { background: rgba(255,255,255,0.22); }
+.btn-ghost.active { background: rgba(255,255,255,0.3); border-color: white; }
+.spinner-sm { width:12px;height:12px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.toolbar-sep { width: 1px; height: 24px; background: rgba(255,255,255,0.2); margin: 0 4px; }
+
+/* ── EDITOR WRAPPER ── */
+.editor-wrap {
+  max-width: 860px;
+  margin: 28px auto;
+  padding: 0 20px 80px;
+}
+
+/* ── MODE TOGGLE ── */
+.mode-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.mode-bar label { font-size: 12px; font-weight: 600; color: var(--text2); }
+.mode-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.12s;
+}
+.mode-btn.active { background: var(--brand); color: white; border-color: var(--brand); }
+
+/* ══════════════════════════════════════════
+   FLYER CANVAS — SINGLE STORY
+═══════════════════════════════════════════ */
+#flyerCanvas {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+  overflow: hidden;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* ── FLYER TOP: STORY SECTION ── */
+.flyer-story {
+  background: white;
+  padding: 28px 32px 24px;
+  position: relative;
+}
+
+.flyer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.flyer-headline {
+  flex: 1;
+}
+.flyer-delivering {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.flyer-delivering span { color: var(--brand); }
+.flyer-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+.flyer-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.flyer-logo-wrap img { height: 48px; width: auto; }
+
+/* ── STORY CONTENT GRID ── */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 20px;
+  align-items: start;
+}
+
+.story-left {}
+
+.story-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin-bottom: 6px;
+  border-bottom: 2px solid var(--brand);
+  padding-bottom: 6px;
+}
+
+.story-meta {
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+.story-meta strong { color: var(--text); }
+
+.story-body {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.story-gains {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--brand-dark);
+  background: var(--brand-light);
+  border-left: 3px solid var(--brand);
+  padding: 8px 12px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 10px;
+}
+
+.story-team {
+  font-size: 12px;
+  color: var(--text3);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ── PHOTO + QUOTE COLUMN ── */
+.story-right { display: flex; flex-direction: column; gap: 10px; }
+
+.patient-photo {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 3px solid var(--brand-light);
+  display: block;
+}
+.patient-photo-placeholder {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: var(--brand-light);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text3);
+  font-size: 12px;
+  border: 2px dashed var(--border);
+}
+.patient-photo-placeholder .icon { font-size: 28px; }
+.photo-caption {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.quote-box {
+  background: var(--brand-light);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--brand-dark);
+  border-left: 3px solid var(--brand);
+}
+.quote-attr {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  margin-top: 4px;
+  text-align: right;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── FLYER BOTTOM: FACILITY PANEL ── */
+.flyer-facility {
+  background: var(--brand-dark);
+  color: white;
+  padding: 20px 32px;
+}
+
+.facility-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.facility-subhead {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 16px;
+}
+.facility-tagline {
+  text-align: center;
+  font-size: 12px;
+  font-style: italic;
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+
+.facility-boxes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.facility-box {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  text-align: center;
+}
+.facility-box strong { display: block; font-size: 13px; margin-bottom: 3px; }
+
+.facility-footer {
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.facility-contact strong { display: block; font-size: 13px; }
+.facility-ins { opacity: 0.75; font-size: 11px; }
+.facility-accept { text-align: right; font-size: 11px; opacity: 0.85; }
+
+/* ── EDITABLE STYLES ── */
+.editable-field {
+  outline: none;
+  border-radius: 3px;
+  transition: background 0.1s, box-shadow 0.1s;
+  cursor: text;
+}
+.edit-mode .editable-field:hover {
+  background: rgba(29,95,138,0.06);
+  box-shadow: 0 0 0 2px rgba(29,95,138,0.2);
+}
+.edit-mode .editable-field:focus {
+  background: rgba(29,95,138,0.08);
+  box-shadow: 0 0 0 2px var(--brand);
+}
+
+/* ── MULTI-STORY MODE ── */
+#multiCanvas { display: none; }
+.multi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 24px;
+  background: white;
+}
+.mini-story {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.mini-story-header {
+  background: var(--brand);
+  color: white;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.mini-story-body {
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.mini-story-quote {
+  font-style: italic;
+  color: var(--brand-dark);
+  border-left: 2px solid var(--brand);
+  padding-left: 8px;
+  margin-top: 8px;
+  font-size: 11.5px;
+}
+.add-story-card {
+  background: var(--brand-light);
+  border: 2px dashed var(--brand);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 160px;
+  cursor: pointer;
+  color: var(--brand);
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+.add-story-card:hover { background: rgba(29,95,138,0.12); }
+
+/* ── LOADING OVERLAY ── */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+.loading-overlay.show { display: flex; }
+.loading-spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--brand-light);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.loading-msg { font-weight: 600; color: var(--brand); font-size: 15px; }
+
+@media print {
+  .toolbar, .mode-bar, .editor-wrap > *:not(#flyerCanvas):not(#multiCanvas) { display: none !important; }
+  .editor-wrap { padding: 0; margin: 0; max-width: 100%; }
+  #flyerCanvas, #multiCanvas { box-shadow: none; border-radius: 0; }
+  body { background: white; }
+}
+
+@media (max-width: 600px) {
+  .story-grid { grid-template-columns: 1fr; }
+  .story-right { flex-direction: row; flex-wrap: wrap; }
+  .facility-boxes { grid-template-columns: 1fr; }
+  .facility-footer { flex-direction: column; text-align: center; }
+  .flyer-delivering { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <span class="toolbar-title">Delivering PUREcovery</span>
+  <div class="toolbar-sep"></div>
+  <button class="btn btn-ghost active" id="editModeBtn" onclick="toggleEditMode()">✏ Edit Mode</button>
+  <button class="btn btn-white" id="regenerateBtn" onclick="regenerateAI()">✦ AI Enhance</button>
+  <div class="toolbar-sep"></div>
+  <button class="btn btn-gold" onclick="printFlyer()">🖨 Print / Save PDF</button>
+  <button class="btn btn-green" onclick="copyShareLink()">🔗 Copy Share Link</button>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-msg" id="loadingMsg">Generating flyer…</div>
+</div>
+
+<div class="editor-wrap">
+
+  <!-- MODE BAR -->
+  <div class="mode-bar">
+    <label>Flyer Mode:</label>
+    <button class="mode-btn active" onclick="setMode('single', this)">📄 Single Story</button>
+    <button class="mode-btn" onclick="setMode('multi', this)">📰 Newsletter (Multi-Story)</button>
+    <div style="margin-left:auto;font-size:11px;color:var(--text3);">Click any text on the flyer to edit it directly</div>
+  </div>
+
+  <!-- SINGLE STORY FLYER -->
+  <div id="flyerCanvas">
+
+    <!-- STORY SECTION -->
+    <div class="flyer-story" id="flyerStorySection">
+      <div class="flyer-header">
+        <div class="flyer-headline">
+          <div class="flyer-delivering">Delivering...<br><span>PUREcovery</span></div>
+          <div class="flyer-subtitle" id="flyerFacilitySubtitle">Success Story</div>
+        </div>
+        <div class="flyer-logo-wrap">
+          <img id="flyerLogo" src="" alt="PUREcovery">
+        </div>
+      </div>
+
+      <div class="story-grid">
+        <div class="story-left">
+          <div class="story-name editable-field" id="storyName" contenteditable="false">Patient Success Story</div>
+          <div class="story-meta" id="storyMeta">
+            <div><strong>Diagnosis:</strong> <span class="editable-field" id="storyDiagnosis" contenteditable="false">—</span></div>
+            <div><strong>Length of Stay:</strong> <span class="editable-field" id="storyLOS" contenteditable="false">—</span></div>
+            <div><strong>Discharge Location:</strong> <span class="editable-field" id="storyDischarge" contenteditable="false">—</span></div>
+          </div>
+          <div class="story-body editable-field" id="storyBody" contenteditable="false">Story content will appear here after generation.</div>
+          <div class="story-gains editable-field" id="storyGains" contenteditable="false">
+            <strong>Functional Gains:</strong> —
+          </div>
+          <div class="story-team editable-field" id="storyTeam" contenteditable="false"></div>
+        </div>
+
+        <div class="story-right">
+          <div id="photoWrap">
+            <div class="patient-photo-placeholder" id="photoPlaceholder">
+              <div class="icon">📷</div>
+              <div>No photo uploaded</div>
+            </div>
+            <img class="patient-photo" id="patientPhoto" src="" alt="Patient" style="display:none;">
+            <div class="photo-caption editable-field" id="photoCaption" contenteditable="false"></div>
+          </div>
+          <div class="quote-box" id="quoteBox" style="display:none;">
+            <div class="editable-field" id="quoteText" contenteditable="false"></div>
+            <div class="quote-attr editable-field" id="quoteAttr" contenteditable="false"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FACILITY SECTION -->
+    <div class="flyer-facility" id="flyerFacilitySection">
+      <div class="facility-headline editable-field" id="facilityHeadline" contenteditable="false">PUREcovery at [Facility Name]</div>
+      <div class="facility-subhead editable-field" id="facilitySubhead" contenteditable="false">Your Recovery Is Our Top Priority</div>
+      <div class="facility-tagline editable-field" id="facilityTagline" contenteditable="false">We never lose sight of why you're here — to recover, recharge, and return home refreshed.</div>
+
+      <div class="facility-boxes">
+        <div class="facility-box">
+          <strong class="editable-field" id="box1Title" contenteditable="false">Our Commitment</strong>
+          <span class="editable-field" id="box1Body" contenteditable="false">Give our admissions team a call to start the process, handle authorizations, and schedule a tour.</span>
+        </div>
+        <div class="facility-box">
+          <strong class="editable-field" id="box2Title" contenteditable="false">Outcomes</strong>
+          <span class="editable-field" id="box2Body" contenteditable="false">Our team is dedicated to helping every patient reach their highest level of independence.</span>
+        </div>
+        <div class="facility-box">
+          <strong class="editable-field" id="box3Title" contenteditable="false">Short Term Skilled Needs</strong>
+          <span class="editable-field" id="box3Body" contenteditable="false">Admissions accepted on weekends &amp; after hours</span>
+        </div>
+      </div>
+
+      <div class="facility-footer">
+        <div class="facility-contact">
+          <strong class="editable-field" id="facilityContactName" contenteditable="false">Admissions Contact</strong>
+          <span class="editable-field" id="facilityContactPhone" contenteditable="false">Contact our admissions team</span>
+        </div>
+        <div class="facility-ins editable-field" id="facilityInsurance" contenteditable="false">In Network Insurance: Medicare, Medicaid &amp; major commercial plans</div>
+        <div class="facility-accept editable-field" id="facilityAccept" contenteditable="false">Admissions accepted on weekends &amp; after hours</div>
+      </div>
+    </div>
+
+  </div><!-- end flyerCanvas -->
+
+  <!-- MULTI-STORY NEWSLETTER -->
+  <div id="multiCanvas">
+    <div style="background:var(--brand-dark);padding:20px 32px;color:white;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;">Delivering... <span style="color:#7BC8F0;">PUREcovery</span></div>
+        <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.7;margin-top:3px;">Monthly Success Stories Newsletter</div>
+      </div>
+      <img id="multiLogo" src="" alt="PUREcovery" style="height:44px;background:white;border-radius:6px;padding:3px;">
+    </div>
+    <div class="multi-grid" id="multiGrid">
+      <!-- Stories injected here -->
+      <div class="add-story-card" onclick="addStoryToNewsletter()">
+        <div style="font-size:28px;">+</div>
+        <div>Add Another Story</div>
+        <div style="font-size:11px;font-weight:400;opacity:0.7;">Paste a story link or load from submissions</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end editor-wrap -->
+
+<script>
+
+// Embedded logo fallback
+const EMBEDDED_LOGO = "data:image/png;base64,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";
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let storyData   = {};
+let editMode    = true;
+let currentMode = "single";
+let multiStories = [];
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  loadStoryFromURL();
+});
+
+function loadStoryFromURL() {
+  const params  = new URLSearchParams(window.location.search);
+  const encoded = params.get("story");
+  if (encoded) {
+    try {
+      storyData = JSON.parse(atob(encoded));
+    } catch(e) { storyData = demoStory(); }
+  } else {
+    storyData = demoStory();
+  }
+  populateFlyer(storyData);
+  generateAIBody(storyData);
+}
+
+function demoStory() {
+  return {
+    facility_name: "PH Ops of Arlington LLC",
+    q2_diagnosis: "Orthopedic (joint replacement, fracture) & Pain Management",
+    length_of_stay: "37",
+    discharge_destination: "Home",
+    q1_hook: "Mr. Kinard showed remarkable dedication not only to his own recovery, but also his commitment to others as a caregiver to his father.",
+    functional_gains: "Independent for Transfers, 325ft Gait distance with a 2WW, ADL independence",
+    q4_quote: "Mr. Kinard has come a long way since starting therapy. He works hard, keeps a great attitude, and always keeps us laughing with his shirts and jokes. It's been awesome seeing his progress.",
+    quote_source: "therapist",
+    therapist_name: "Delia Santana",
+    therapist_role: "PTA",
+    q5_therapy_team: "COTA - Chris Booty, PTA - Delia Santana",
+    admissions_contact: "Roxanna Gonzalez",
+    admissions_title: "Admissions Director",
+    admissions_phone: "(936) 494-6600",
+    admissions_email: "bpadmissions@purehlth.com",
+    insurance_accepted: "Medicare, Medicaid, major commercial plans",
+    weekend_admissions: "Yes",
+    after_hours_admissions: "Yes",
+    story_tags: "orthopedic"
+  };
+}
+
+// ─────────────────────────────────────────────
+// POPULATE FLYER FROM DATA
+// ─────────────────────────────────────────────
+function populateFlyer(d) {
+  // Logo
+  const logoSrc = d._logo || EMBEDDED_LOGO;
+  document.getElementById("flyerLogo").src = logoSrc;
+  document.getElementById("multiLogo").src = logoSrc;
+
+  // Facility subtitle
+  setText("flyerFacilitySubtitle", d.facility_name ? `Success Story · ${d.facility_name}` : "Success Story");
+
+  // Story fields
+  setText("storyDiagnosis", d.q2_diagnosis || "—");
+  setText("storyLOS",       d.length_of_stay ? d.length_of_stay + " days" : "—");
+  setText("storyDischarge", d.discharge_destination || "—");
+
+  // Gains
+  document.getElementById("storyGains").innerHTML =
+    `<strong>Mr./Ms. ${lastName(d)} Functional Gains:</strong> ${d.functional_gains || "—"}`;
+
+  // Team
+  setText("storyTeam", d.q5_therapy_team || "");
+
+  // Quote
+  if (d.q4_quote) {
+    document.getElementById("quoteBox").style.display = "block";
+    setText("quoteText", `"${d.q4_quote}"`);
+    const attr = d.quote_source === "therapist"
+      ? `— ${d.therapist_name || ""}, ${d.therapist_role || ""}`
+      : `— ${d.quote_attr_name || "Patient"}`;
+    setText("quoteAttr", attr);
+  }
+
+  // Photo
+  if (d.photo_base64) {
+    const img = document.getElementById("patientPhoto");
+    img.src = `data:${d.photo_mime_type || "image/jpeg"};base64,${d.photo_base64}`;
+    img.style.display = "block";
+    document.getElementById("photoPlaceholder").style.display = "none";
+    setText("photoCaption", lastName(d) ? `${lastName(d)}` : "");
+  }
+
+  // Facility panel
+  setText("facilityHeadline", d.facility_name ? `PUREcovery at ${d.facility_name}` : "PUREcovery");
+  setText("facilityContactName", d.admissions_title
+    ? `Contact our ${d.admissions_title}: ${d.admissions_contact || ""}`
+    : (d.admissions_contact || "Admissions Contact"));
+  setText("facilityContactPhone", d.admissions_phone || "");
+  setText("facilityInsurance", d.insurance_accepted
+    ? `In Network Insurances: ${d.insurance_accepted}`
+    : "In Network Insurances: Medicare, Medicaid & major commercial plans");
+  const accepts = [];
+  if (d.weekend_admissions === "Yes") accepts.push("weekends");
+  if (d.after_hours_admissions === "Yes") accepts.push("after hours");
+  if (accepts.length) {
+    setText("facilityAccept", `Admissions accepted on ${accepts.join(" & ")}`);
+    setText("box3Body", `Admissions accepted on ${accepts.join(" & ")}`);
+  }
+}
+
+function lastName(d) {
+  if (!d.q1_hook && !d.functional_gains) return "";
+  // Try to extract a name-like word from the hook
+  const match = (d.q1_hook || "").match(/\b(Mr\.|Ms\.|Mrs\.)\s+(\w+)/);
+  if (match) return match[1] + " " + match[2];
+  return "Patient";
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val || "";
+}
+
+// ─────────────────────────────────────────────
+// AI BODY GENERATION
+// ─────────────────────────────────────────────
+async function generateAIBody(d) {
+  showLoading("Crafting story narrative…");
+
+  const prompt = `You are writing content for a healthcare rehabilitation flyer called "Delivering PUREcovery."
+
+Story data:
+- Facility: ${d.facility_name || ""}
+- Diagnosis: ${d.q2_diagnosis || ""}
+- Length of stay: ${d.length_of_stay || ""} days
+- Discharge to: ${d.discharge_destination || ""}
+- What stood out: ${d.q1_hook || ""}
+- Functional gains: ${d.functional_gains || ""}
+- Quote: "${d.q4_quote || ""}"
+- Therapy team: ${d.q5_therapy_team || ""}
+
+Write THREE things, separated by |||:
+
+1. PATIENT_NAME: A respectful name reference for the patient (e.g. "Mr. Johnson" or "Ms. Garcia") based on the hook text. If no name found, use "Our Patient". MAX 20 chars.
+
+2. STORY_BODY: A compelling 3-4 sentence narrative about this patient's recovery journey. Warm, personal tone. No medical advice. Do not use the patient's last name alone. MAX 220 chars.
+
+3. FACILITY_BOXES: Three short phrases (separated by |) for the three facility highlight boxes. Should reference actual outcomes, admission availability, and a call to action. Each MAX 80 chars.
+
+Respond ONLY in this exact format with no extra text:
+PATIENT_NAME|||STORY_BODY|||box1|box2|box3`;
+
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data   = await resp.json();
+    const text   = data.content?.[0]?.text?.trim() || "";
+    const parts  = text.split("|||");
+
+    if (parts.length >= 3) {
+      const patientName = parts[0].trim();
+      const storyBody   = parts[1].trim();
+      const boxes       = parts[2].split("|");
+
+      setText("storyName",  patientName + "'s Progress Story");
+      setText("storyBody",  storyBody);
+      if (boxes[0]) setText("box1Body", boxes[0].trim());
+      if (boxes[1]) setText("box2Body", boxes[1].trim());
+      if (boxes[2]) setText("box3Body", boxes[2].trim());
+
+      // Update gains label with patient name
+      document.getElementById("storyGains").innerHTML =
+        `<strong>${patientName}'s Functional Gains:</strong> ${d.functional_gains || "—"}`;
+    }
+  } catch(err) {
+    console.warn("AI generation failed:", err.message);
+    setText("storyBody", d.q1_hook || "This patient achieved remarkable results during their stay.");
+    setText("storyName", "Patient Progress Story");
+  }
+  hideLoading();
+}
+
+async function regenerateAI() {
+  await generateAIBody(storyData);
+}
+
+// ─────────────────────────────────────────────
+// EDIT MODE
+// ─────────────────────────────────────────────
+function toggleEditMode() {
+  editMode = !editMode;
+  const canvas = document.getElementById("flyerCanvas");
+  const btn    = document.getElementById("editModeBtn");
+  const fields = document.querySelectorAll(".editable-field");
+
+  if (editMode) {
+    canvas.classList.add("edit-mode");
+    fields.forEach(f => f.setAttribute("contenteditable", "true"));
+    btn.classList.add("active");
+    btn.textContent = "✏ Edit Mode ON";
+  } else {
+    canvas.classList.remove("edit-mode");
+    fields.forEach(f => f.setAttribute("contenteditable", "false"));
+    btn.classList.remove("active");
+    btn.textContent = "✏ Edit Mode OFF";
+  }
+}
+
+// Start in edit mode
+document.getElementById("flyerCanvas").classList.add("edit-mode");
+document.querySelectorAll(".editable-field").forEach(f => f.setAttribute("contenteditable", "true"));
+
+// ─────────────────────────────────────────────
+// MULTI-STORY MODE
+// ─────────────────────────────────────────────
+function setMode(mode, btn) {
+  currentMode = mode;
+  document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("flyerCanvas").style.display  = mode === "single" ? "block" : "none";
+  document.getElementById("multiCanvas").style.display  = mode === "multi"  ? "block" : "none";
+  if (mode === "multi" && multiStories.length === 0) {
+    multiStories.push(storyData);
+    renderMultiGrid();
+  }
+}
+
+function renderMultiGrid() {
+  const grid = document.getElementById("multiGrid");
+  grid.innerHTML = "";
+  multiStories.forEach((s, i) => {
+    const card = document.createElement("div");
+    card.className = "mini-story";
+    const name = s.facility_name || "Story " + (i+1);
+    const body = s.q1_hook || s.functional_gains || "No story content.";
+    const quote = s.q4_quote ? `<div class="mini-story-quote">"${s.q4_quote}"</div>` : "";
+    card.innerHTML = `
+      <div class="mini-story-header">${name}</div>
+      <div class="mini-story-body">
+        <strong style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--brand);">${s.q2_diagnosis || ""}</strong>
+        <p style="margin-top:4px;">${body.slice(0,180)}${body.length > 180 ? "…" : ""}</p>
+        ${quote}
+        ${s.functional_gains ? `<p style="margin-top:6px;font-size:11px;font-weight:600;color:var(--brand-dark);">Gains: ${s.functional_gains.slice(0,100)}</p>` : ""}
+        <p style="margin-top:4px;font-size:11px;color:var(--text3);">LOS: ${s.length_of_stay || "—"} days · Discharge: ${s.discharge_destination || "—"}</p>
+      </div>`;
+    grid.appendChild(card);
+  });
+  // Add story button
+  const addCard = document.createElement("div");
+  addCard.className = "add-story-card";
+  addCard.onclick = addStoryToNewsletter;
+  addCard.innerHTML = `<div style="font-size:28px;">+</div><div>Add Another Story</div><div style="font-size:11px;font-weight:400;opacity:0.7;">Paste a story URL</div>`;
+  grid.appendChild(addCard);
+}
+
+function addStoryToNewsletter() {
+  const url = prompt("Paste a story link (from the intake form success screen):");
+  if (!url) return;
+  try {
+    const params  = new URLSearchParams(new URL(url).search);
+    const encoded = params.get("story");
+    if (encoded) {
+      const story = JSON.parse(atob(encoded));
+      multiStories.push(story);
+      renderMultiGrid();
+    } else {
+      alert("No story data found in that URL.");
+    }
+  } catch(e) {
+    alert("Could not load story from that URL.");
+  }
+}
+
+// ─────────────────────────────────────────────
+// PRINT / SHARE
+// ─────────────────────────────────────────────
+function printFlyer() {
+  // Turn off edit mode before printing
+  const wasEdit = editMode;
+  if (wasEdit) toggleEditMode();
+  setTimeout(() => {
+    window.print();
+    if (wasEdit) setTimeout(toggleEditMode, 500);
+  }, 200);
+}
+
+function copyShareLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.querySelector(".btn-green");
+    btn.textContent = "✓ Copied!";
+    setTimeout(() => btn.innerHTML = "🔗 Copy Share Link", 2000);
+  });
+}
+
+// ─────────────────────────────────────────────
+// LOADING
+// ─────────────────────────────────────────────
+function showLoading(msg) {
+  document.getElementById("loadingMsg").textContent = msg || "Loading…";
+  document.getElementById("loadingOverlay").classList.add("show");
+}
+function hideLoading() {
+  document.getElementById("loadingOverlay").classList.remove("show");
+}
+</script>
+</body>
+</html>

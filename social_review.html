@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUREcovery | Social Media Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #1D5F8A;
+    --brand-light: #E6F1FB;
+    --accent: #0F6E56;
+    --accent-light: #E1F5EE;
+    --gold: #C9960C;
+    --gold-light: #FEF6E0;
+    --surface: #FFFFFF;
+    --surface2: #F7F8FA;
+    --border: #E2E0D8;
+    --text: #1A1A18;
+    --text2: #5A5956;
+    --text3: #9A9894;
+    --radius: 12px;
+    --radius-sm: 7px;
+
+    --fb: #1877F2;
+    --ig: #E1306C;
+    --tk: #010101;
+    --gb: #4285F4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #EDF1F7;
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--brand);
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid #378ADD;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-left img { height: 44px; width: auto; background: white; border-radius: 6px; padding: 3px; }
+  .header-title { font-family: 'Playfair Display', serif; font-size: 20px; color: white; font-weight: 400; }
+  .header-sub { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+  .header-badge {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 1100px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .card-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brand);
+  }
+  .card-body { padding: 20px; }
+
+  /* ── STORY PANEL ── */
+  .story-field { margin-bottom: 14px; }
+  .story-field label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text3);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .story-field p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    min-height: 36px;
+  }
+  .story-field p.quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    border-left: 3px solid var(--brand);
+    background: var(--brand-light);
+  }
+
+  /* ── INCLUDE TOGGLES ── */
+  .include-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .include-row:last-child { border-bottom: none; }
+  .include-row input[type="checkbox"] {
+    width: 15px; height: 15px;
+    accent-color: var(--brand);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .include-row span {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text2);
+  }
+  .include-row.checked span { color: var(--brand); }
+
+  /* ── PLATFORM TABS ── */
+  .platform-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .platform-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .platform-tab .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .platform-tab[data-platform="facebook"] .dot { background: var(--fb); }
+  .platform-tab[data-platform="instagram"] .dot { background: var(--ig); }
+  .platform-tab[data-platform="tiktok"] .dot { background: var(--tk); }
+  .platform-tab[data-platform="google"] .dot { background: var(--gb); }
+
+  .platform-tab.active[data-platform="facebook"] { border-color: var(--fb); color: var(--fb); background: #EEF4FF; }
+  .platform-tab.active[data-platform="instagram"] { border-color: var(--ig); color: var(--ig); background: #FEF0F5; }
+  .platform-tab.active[data-platform="tiktok"] { border-color: #555; color: #111; background: #F5F5F5; }
+  .platform-tab.active[data-platform="google"] { border-color: var(--gb); color: var(--gb); background: #EEF3FF; }
+
+  /* ── GENERATE BUTTON ── */
+  .btn-generate {
+    width: 100%;
+    padding: 12px;
+    background: var(--brand);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .btn-generate:hover { background: #185FA5; }
+  .btn-generate:active { transform: scale(0.98); }
+  .btn-generate.loading { opacity: 0.7; pointer-events: none; }
+
+  /* ── CAPTION OUTPUT ── */
+  .caption-output {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .caption-output.show { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .caption-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    min-height: 120px;
+    white-space: pre-wrap;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .caption-box.editable {
+    outline: none;
+    cursor: text;
+  }
+  .caption-box.editable:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(29,95,138,0.08);
+  }
+
+  .caption-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+  .btn-copy { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+  .btn-copy:hover { background: var(--brand-light); color: var(--brand); }
+  .btn-copy.copied { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+  .btn-share { color: white; }
+  .btn-share[data-platform="facebook"] { background: var(--fb); }
+  .btn-share[data-platform="instagram"] { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .btn-share[data-platform="tiktok"] { background: #010101; }
+  .btn-share[data-platform="google"] { background: var(--gb); }
+
+  /* ── CALENDAR ── */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .cal-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    text-align: center;
+  }
+  .cal-platform {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .cal-item[data-p="facebook"] .cal-platform { color: var(--fb); }
+  .cal-item[data-p="instagram"] .cal-platform { color: var(--ig); }
+  .cal-item[data-p="tiktok"] .cal-platform { color: #555; }
+  .cal-item[data-p="google"] .cal-platform { color: var(--gb); }
+  .cal-day { font-size: 20px; font-weight: 700; color: var(--text); }
+  .cal-time { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .cal-note { font-size: 11px; color: var(--text2); margin-top: 4px; line-height: 1.4; }
+
+  /* ── PHOTO PREVIEW ── */
+  .photo-preview {
+    display: none;
+    margin-bottom: 14px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    max-height: 200px;
+  }
+  .photo-preview.show { display: block; }
+  .photo-preview img { width: 100%; object-fit: cover; max-height: 200px; display: block; }
+
+  /* ── CHAR COUNT ── */
+  .char-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .char-count {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text3);
+  }
+  .char-count.warn { color: var(--gold); }
+  .char-count.over { color: #C0392B; }
+
+  /* ── LOADING SPINNER ── */
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text3);
+  }
+  .empty-state .icon { font-size: 36px; margin-bottom: 12px; }
+  .empty-state p { font-size: 13px; }
+
+  /* ── TONE SLIDER ── */
+  .tone-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .tone-label { font-size: 11px; color: var(--text3); font-weight: 600; white-space: nowrap; }
+  input[type="range"] {
+    flex: 1;
+    accent-color: var(--brand);
+    height: 4px;
+    cursor: pointer;
+  }
+
+  /* ── VERSIONS ── */
+  .version-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .version-btn {
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.12s;
+  }
+  .version-btn.active { background: var(--brand); color: white; border-color: var(--brand); }
+
+  .no-story-banner {
+    background: var(--gold-light);
+    border: 1px solid #F0C040;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: none;
+  }
+  .no-story-banner.show { display: block; }
+
+  @media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; }
+    .header { padding: 14px 16px; }
+    .page { padding: 16px 12px 80px; }
+    .calendar-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <img id="headerLogo" src="" alt="PUREcovery">
+    <div>
+      <div class="header-title">Social Media Studio</div>
+      <div class="header-sub">Review story · Generate captions · Schedule posts</div>
+    </div>
+  </div>
+  <div class="header-badge">Content Review</div>
+</div>
+
+<div class="page">
+
+  <div class="no-story-banner" id="noStoryBanner">
+    ℹ No story data found. Paste a story review link from a form submission, or use the demo data below.
+  </div>
+
+  <div class="two-col">
+
+    <!-- LEFT: STORY PANEL -->
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-header">
+          <div class="card-title">Story Details</div>
+        </div>
+        <div class="card-body" id="storyPanel">
+          <div class="story-field">
+            <label>Facility</label>
+            <p id="sf-facility">—</p>
+          </div>
+          <div class="story-field">
+            <label>Diagnosis / Condition</label>
+            <p id="sf-diagnosis">—</p>
+          </div>
+          <div class="story-field">
+            <label>What Made This Case Stand Out</label>
+            <p id="sf-hook">—</p>
+          </div>
+          <div class="story-field">
+            <label>Functional Gains</label>
+            <p id="sf-gains">—</p>
+          </div>
+          <div class="story-field">
+            <label>Quote</label>
+            <p class="quote" id="sf-quote">—</p>
+          </div>
+          <div class="story-field">
+            <label>Quote From</label>
+            <p id="sf-quotefrom">—</p>
+          </div>
+          <div class="story-field">
+            <label>Discharge Destination</label>
+            <p id="sf-discharge">—</p>
+          </div>
+          <div id="photoPreviewWrap" class="photo-preview">
+            <img id="storyPhoto" src="" alt="Patient/team photo">
+          </div>
+        </div>
+      </div>
+
+      <!-- INCLUDE TOGGLES -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Include in Posts</div>
+        </div>
+        <div class="card-body" style="padding:12px 20px;">
+          <label class="include-row checked" id="inc-hook">
+            <input type="checkbox" checked onchange="toggleInclude(this,'hook')"> <span>The Hook</span>
+          </label>
+          <label class="include-row checked" id="inc-gains">
+            <input type="checkbox" checked onchange="toggleInclude(this,'gains')"> <span>Functional Gains</span>
+          </label>
+          <label class="include-row checked" id="inc-quote">
+            <input type="checkbox" checked onchange="toggleInclude(this,'quote')"> <span>Patient Quote</span>
+          </label>
+          <label class="include-row" id="inc-facility">
+            <input type="checkbox" onchange="toggleInclude(this,'facility')"> <span>Facility Name</span>
+          </label>
+          <label class="include-row" id="inc-diagnosis">
+            <input type="checkbox" onchange="toggleInclude(this,'diagnosis')"> <span>Diagnosis/Condition</span>
+          </label>
+          <label class="include-row" id="inc-discharge">
+            <input type="checkbox" onchange="toggleInclude(this,'discharge')"> <span>Discharge Outcome</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: GENERATOR -->
+    <div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Caption Generator</div>
+        </div>
+        <div class="card-body">
+
+          <!-- Platform selector -->
+          <div class="platform-tabs">
+            <button class="platform-tab active" data-platform="facebook" onclick="selectPlatform(this)">
+              <span class="dot"></span> Facebook
+            </button>
+            <button class="platform-tab" data-platform="instagram" onclick="selectPlatform(this)">
+              <span class="dot"></span> Instagram
+            </button>
+            <button class="platform-tab" data-platform="tiktok" onclick="selectPlatform(this)">
+              <span class="dot"></span> TikTok
+            </button>
+            <button class="platform-tab" data-platform="google" onclick="selectPlatform(this)">
+              <span class="dot"></span> Google Business
+            </button>
+          </div>
+
+          <!-- Tone slider -->
+          <div class="tone-row">
+            <span class="tone-label">Warm & Personal</span>
+            <input type="range" id="toneSlider" min="1" max="5" value="2">
+            <span class="tone-label">Professional</span>
+          </div>
+
+          <!-- Version selector -->
+          <div class="version-row">
+            <button class="version-btn active" onclick="selectVersion(this,1)">Version 1</button>
+            <button class="version-btn" onclick="selectVersion(this,2)">Version 2</button>
+            <button class="version-btn" onclick="selectVersion(this,3)">Version 3</button>
+          </div>
+
+          <!-- Generate button -->
+          <button class="btn-generate" id="generateBtn" onclick="generateCaption()">
+            ✦ Generate Caption
+          </button>
+
+          <!-- Output -->
+          <div class="caption-output" id="captionOutput">
+            <div class="char-wrap">
+              <span style="font-size:12px;font-weight:600;color:var(--text2);">Caption</span>
+              <span class="char-count" id="charCount">0 chars</span>
+            </div>
+            <div class="caption-box editable" id="captionText" contenteditable="true" oninput="updateCharCount()"></div>
+            <div class="caption-actions" id="captionActions"></div>
+          </div>
+
+          <div class="empty-state" id="emptyState">
+            <div class="icon">✦</div>
+            <p>Select a platform and click<br><strong>Generate Caption</strong> to create your post</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CONTENT CALENDAR -->
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header">
+          <div class="card-title">📅 Suggested Content Calendar</div>
+        </div>
+        <div class="card-body">
+          <p style="font-size:12px;color:var(--text3);margin-bottom:14px;">Best times to post this story for maximum reach:</p>
+          <div class="calendar-grid">
+            <div class="cal-item" data-p="facebook">
+              <div class="cal-platform">Facebook</div>
+              <div class="cal-day">Wed</div>
+              <div class="cal-time">1:00 PM – 3:00 PM</div>
+              <div class="cal-note">Highest engagement for healthcare stories</div>
+            </div>
+            <div class="cal-item" data-p="instagram">
+              <div class="cal-platform">Instagram</div>
+              <div class="cal-day">Tue</div>
+              <div class="cal-time">11:00 AM – 1:00 PM</div>
+              <div class="cal-note">Reels perform best midday Tuesday</div>
+            </div>
+            <div class="cal-item" data-p="tiktok">
+              <div class="cal-platform">TikTok</div>
+              <div class="cal-day">Thu</div>
+              <div class="cal-time">7:00 PM – 9:00 PM</div>
+              <div class="cal-note">Evening posts reach wider audience</div>
+            </div>
+            <div class="cal-item" data-p="google">
+              <div class="cal-platform">Google</div>
+              <div class="cal-day">Mon</div>
+              <div class="cal-time">9:00 AM – 11:00 AM</div>
+              <div class="cal-note">Monday morning for referral searches</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// STORY DATA — loaded from URL params or demo
+// ─────────────────────────────────────────────
+let story = {};
+let currentPlatform = "facebook";
+let currentVersion  = 1;
+let included = { hook: true, gains: true, quote: true, facility: false, diagnosis: false, discharge: false };
+let generatedCaptions = {};
+
+const PLATFORM_LIMITS = {
+  facebook:  { chars: 63206, recommended: 400,  label: "Facebook" },
+  instagram: { chars: 2200,  recommended: 150,  label: "Instagram" },
+  tiktok:    { chars: 2200,  recommended: 150,  label: "TikTok" },
+  google:    { chars: 1500,  recommended: 300,  label: "Google Business" }
+};
+
+const PLATFORM_TIPS = {
+  facebook:  "Longer storytelling works well. Include a call to action.",
+  instagram: "Short, punchy, emoji-friendly. Hashtags at the end.",
+  tiktok:    "Hook in first line. Casual, energetic tone. Short captions only.",
+  google:    "Professional, factual. Mention services and location. No hashtags."
+};
+
+// ─────────────────────────────────────────────
+// LOAD DATA FROM URL PARAMS
+// ─────────────────────────────────────────────
+function loadStoryFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const encoded = params.get("story");
+  if (encoded) {
+    try {
+      story = JSON.parse(atob(encoded));
+      populateStoryPanel();
+      return;
+    } catch(e) {}
+  }
+  // Load demo data if no story in URL
+  document.getElementById("noStoryBanner").classList.add("show");
+  loadDemoStory();
+}
+
+function loadDemoStory() {
+  story = {
+    facility_name: "PH Ops of Arlington LLC",
+    q2_diagnosis: "Severe stroke with right-side paralysis",
+    q1_hook: "At 78, Margaret hadn't walked unassisted in three months. On her last day of therapy, she walked 200 feet down the hallway — and danced one step at her granddaughter's wedding two weeks later.",
+    functional_gains: "Progressed from bed-bound to walking 200 ft with walker. Regained ability to feed herself and dress independently. Climbed 12 stairs before discharge.",
+    q4_quote: "I never thought I'd dance again. These therapists gave me my life back.",
+    quote_source: "patient",
+    quote_attr_name: "Margaret",
+    discharge_destination: "Home",
+    story_tags: "stroke_recovery",
+    date_submitted: new Date().toISOString().slice(0,10)
+  };
+  populateStoryPanel();
+}
+
+function populateStoryPanel() {
+  setText("sf-facility",   story.facility_name || "—");
+  setText("sf-diagnosis",  story.q2_diagnosis  || "—");
+  setText("sf-hook",       story.q1_hook       || "—");
+  setText("sf-gains",      story.functional_gains || "—");
+  setText("sf-quote",      story.q4_quote      ? `"${story.q4_quote}"` : "—");
+  const quoteSrc = story.quote_source === "therapist"
+    ? (story.therapist_name || "Therapist")
+    : story.quote_attr_name || (story.quote_source === "family" ? "Family member" : "Patient");
+  setText("sf-quotefrom",  quoteSrc);
+  setText("sf-discharge",  story.discharge_destination || "—");
+
+  // Photo
+  if (story.photo_base64) {
+    const img = document.getElementById("storyPhoto");
+    img.src = `data:${story.photo_mime_type || "image/jpeg"};base64,${story.photo_base64}`;
+    document.getElementById("photoPreviewWrap").classList.add("show");
+  }
+
+  // Logo
+  if (story._logo) {
+    document.getElementById("headerLogo").src = story._logo;
+  }
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+// ─────────────────────────────────────────────
+// PLATFORM & VERSION SELECTION
+// ─────────────────────────────────────────────
+function selectPlatform(btn) {
+  document.querySelectorAll(".platform-tab").forEach(t => t.classList.remove("active"));
+  btn.classList.add("active");
+  currentPlatform = btn.dataset.platform;
+  generatedCaptions = {};
+
+  // Show cached caption if exists
+  const output = document.getElementById("captionOutput");
+  const empty  = document.getElementById("emptyState");
+  output.classList.remove("show");
+  empty.style.display = "block";
+}
+
+function selectVersion(btn, v) {
+  document.querySelectorAll(".version-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  currentVersion = v;
+}
+
+function toggleInclude(cb, key) {
+  included[key] = cb.checked;
+  const row = document.getElementById("inc-" + key);
+  if (row) row.classList.toggle("checked", cb.checked);
+}
+
+// ─────────────────────────────────────────────
+// CAPTION GENERATION (Claude API)
+// ─────────────────────────────────────────────
+async function generateCaption() {
+  const btn = document.getElementById("generateBtn");
+  btn.classList.add("loading");
+  btn.innerHTML = '<div class="spinner"></div> Generating…';
+
+  const tone = parseInt(document.getElementById("toneSlider").value);
+  const toneDesc = tone <= 2 ? "warm, personal, and emotionally resonant — focus on the human story"
+                 : tone === 3 ? "balanced — mix of personal warmth and professional credibility"
+                 : "professional and outcome-focused — highlight clinical results and expertise";
+
+  const platform = PLATFORM_LIMITS[currentPlatform];
+  const parts = [];
+  if (included.hook      && story.q1_hook)           parts.push(`Story hook: ${story.q1_hook}`);
+  if (included.gains     && story.functional_gains)  parts.push(`Functional gains: ${story.functional_gains}`);
+  if (included.quote     && story.q4_quote)          parts.push(`Patient quote: "${story.q4_quote}"`);
+  if (included.facility  && story.facility_name)     parts.push(`Facility: ${story.facility_name}`);
+  if (included.diagnosis && story.q2_diagnosis)      parts.push(`Condition: ${story.q2_diagnosis}`);
+  if (included.discharge && story.discharge_destination) parts.push(`Discharged to: ${story.discharge_destination}`);
+
+  const prompt = `You are a healthcare social media expert writing a ${platform.label} post for a therapy rehabilitation facility called PUREcovery.
+
+Story details:
+${parts.join("\n")}
+
+Instructions:
+- Platform: ${platform.label}
+- Tone: ${toneDesc}
+- Recommended length: under ${platform.recommended} characters
+- Always end with the hashtag #yourpurehealth plus 3-5 relevant suggested hashtags
+- ${PLATFORM_TIPS[currentPlatform]}
+- Version: ${currentVersion} (write a unique variation — different angle, opening line, or structure than other versions)
+- Do NOT use the patient's last name
+- Do NOT include any medical advice
+- Make it authentic, not corporate
+- For TikTok: start with a hook that stops the scroll (first line is everything)
+- For Google Business: no hashtags, no emojis, professional tone only
+
+Write ONLY the caption text. No explanation, no preamble.`;
+
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    const caption = data.content?.[0]?.text?.trim() || "Could not generate caption. Please try again.";
+    showCaption(caption);
+  } catch(err) {
+    showCaption("Generation failed: " + err.message + "\n\nCheck your internet connection and try again.");
+  }
+
+  btn.classList.remove("loading");
+  btn.innerHTML = "✦ Regenerate Caption";
+}
+
+function showCaption(text) {
+  const output = document.getElementById("captionOutput");
+  const empty  = document.getElementById("emptyState");
+  const box    = document.getElementById("captionText");
+
+  box.textContent = text;
+  output.classList.add("show");
+  empty.style.display = "none";
+  updateCharCount();
+  renderActions();
+}
+
+// ─────────────────────────────────────────────
+// CHAR COUNT
+// ─────────────────────────────────────────────
+function updateCharCount() {
+  const box   = document.getElementById("captionText");
+  const count = document.getElementById("charCount");
+  const len   = box.textContent.length;
+  const limit = PLATFORM_LIMITS[currentPlatform]?.recommended || 300;
+  count.textContent = `${len} chars`;
+  count.className = "char-count" + (len > limit * 1.5 ? " over" : len > limit ? " warn" : "");
+}
+
+// ─────────────────────────────────────────────
+// ACTION BUTTONS
+// ─────────────────────────────────────────────
+function renderActions() {
+  const wrap = document.getElementById("captionActions");
+  wrap.innerHTML = "";
+
+  // Copy button
+  const copyBtn = document.createElement("button");
+  copyBtn.className = "btn btn-copy";
+  copyBtn.innerHTML = "📋 Copy Caption";
+  copyBtn.onclick = () => {
+    const text = document.getElementById("captionText").textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      copyBtn.innerHTML = "✓ Copied!";
+      copyBtn.classList.add("copied");
+      setTimeout(() => { copyBtn.innerHTML = "📋 Copy Caption"; copyBtn.classList.remove("copied"); }, 2000);
+    });
+  };
+  wrap.appendChild(copyBtn);
+
+  // Platform share buttons
+  const caption = encodeURIComponent(document.getElementById("captionText").textContent);
+
+  if (currentPlatform === "facebook") {
+    const fbBtn = document.createElement("a");
+    fbBtn.className = "btn btn-share";
+    fbBtn.dataset.platform = "facebook";
+    fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=https://mcoajoycemartin.github.io/pureprogress-forms&quote=${caption}`;
+    fbBtn.target = "_blank";
+    fbBtn.innerHTML = "f Post to Facebook";
+    wrap.appendChild(fbBtn);
+  }
+
+  if (currentPlatform === "instagram") {
+    const igBtn = document.createElement("button");
+    igBtn.className = "btn btn-share";
+    igBtn.dataset.platform = "instagram";
+    igBtn.innerHTML = "◎ Copy & Open Instagram";
+    igBtn.onclick = () => {
+      navigator.clipboard.writeText(document.getElementById("captionText").textContent);
+      window.open("https://www.instagram.com/", "_blank");
+    };
+    wrap.appendChild(igBtn);
+  }
+
+  if (currentPlatform === "tiktok") {
+    const tkBtn = document.createElement("button");
+    tkBtn.className = "btn btn-share";
+    tkBtn.dataset.platform = "tiktok";
+    tkBtn.innerHTML = "♪ Copy & Open TikTok";
+    tkBtn.onclick = () => {
+      navigator.clipboard.writeText(document.getElementById("captionText").textContent);
+      window.open("https://www.tiktok.com/upload", "_blank");
+    };
+    wrap.appendChild(tkBtn);
+  }
+
+  if (currentPlatform === "google") {
+    const gbBtn = document.createElement("button");
+    gbBtn.className = "btn btn-share";
+    gbBtn.dataset.platform = "google";
+    gbBtn.innerHTML = "G Copy & Open Google Business";
+    gbBtn.onclick = () => {
+      navigator.clipboard.writeText(document.getElementById("captionText").textContent);
+      window.open("https://business.google.com/", "_blank");
+    };
+    wrap.appendChild(gbBtn);
+  }
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", loadStoryFromURL);
+</script>
+</body>
+</html>
