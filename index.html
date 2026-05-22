@@ -750,13 +750,13 @@
             <label>Photo Status <span class="req">*</span></label>
             <div class="radio-group">
               <label class="radio-item">
-                <input type="radio" name="photoStatus" value="patient_photo" onchange="togglePhotoUpload(this)"> Photo attached (patient)
+                <input type="radio" name="photoStatus" value="patient_photo" onchange="togglePhotoUpload(this)"> Photo/Video attached (patient)
               </label>
               <label class="radio-item">
-                <input type="radio" name="photoStatus" value="team_photo" onchange="togglePhotoUpload(this)"> Photo attached (therapy team / facility)
+                <input type="radio" name="photoStatus" value="team_photo" onchange="togglePhotoUpload(this)"> Photo/Video attached (therapy team / facility)
               </label>
               <label class="radio-item">
-                <input type="radio" name="photoStatus" value="no_photo" onchange="togglePhotoUpload(this)"> No photo this month
+                <input type="radio" name="photoStatus" value="no_photo" onchange="togglePhotoUpload(this)"> No photo or video this month
               </label>
             </div>
 
@@ -775,7 +775,7 @@
             </div>
             <!-- Release reminder banner -->
             <div id="releaseReminderBanner" style="display:none;margin-top:10px;background:var(--warn-light);border:1px solid #EF9F27;border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--warn);align-items:center;gap:10px;flex-wrap:wrap;">
-              <span>⚠ Release form opened in new tab. Once the patient has signed, check the box and continue uploading the photo.</span>
+              <span>⚠ Release form opened in new tab. Once the patient has signed, check the box and continue uploading the photo/video.</span>
               <label style="display:flex;align-items:center;gap:6px;margin-left:auto;white-space:nowrap;cursor:pointer;">
                 <input type="checkbox" id="releaseConfirmed" style="accent-color:var(--brand);width:15px;height:15px;padding:0;">
                 <span style="font-weight:600;color:var(--accent);">Release signed ✓</span>
@@ -786,12 +786,32 @@
 
         <hr class="field-divider">
 
+        <!-- VIDEO UPLOAD -->
         <div class="field-row single">
           <div class="field-group">
-            <label>Required Releases on File <span class="req">*</span></label>
+            <label>Video Upload (optional)</label>
+            <p class="hint" style="margin-bottom:10px;">Upload a patient recovery video. It will be saved to Google Drive and a link emailed to the team. Max 500MB — MP4 or MOV.</p>
+            <div class="upload-zone" id="videoUploadZone" onclick="document.getElementById('videoFile').click()" style="border-color:var(--accent);">
+              <div class="upload-icon">🎥</div>
+              <p>Click to browse or <strong>drag & drop</strong></p>
+              <p style="margin-top:4px;font-size:11px;">MP4, MOV — max 500MB</p>
+              <input type="file" id="videoFile" accept="video/mp4,video/quicktime,video/*" onchange="handleVideoSelect(this)">
+            </div>
+            <div class="upload-preview" id="videoPreview" style="display:none;margin-top:10px;padding:10px 12px;background:var(--accent-light);border-radius:var(--radius-sm);font-size:13px;color:var(--accent);align-items:center;gap:8px;">
+              <span>✓</span>
+              <span id="videoFileName">video.mp4</span>
+              <span id="videoFileSize" style="opacity:0.7;font-size:11px;"></span>
+            </div>
+            <div id="videoWarning" style="display:none;margin-top:8px;font-size:12px;color:var(--danger);">
+              ⚠ File too large. Please use a video under 500MB.
+            </div>
+          </div>
+        </div>
+
+        <hr class="field-divider">
             <p class="hint" style="margin-bottom:10px;">Story cannot be published without these. Confirm before submitting.</p>
             <div class="checkbox-group">
-              <label class="check-item"><input type="checkbox" id="rel1"> Signed photo &amp; story release from patient or legal representative</label>
+              <label class="check-item"><input type="checkbox" id="rel1"> Signed photo/video &amp; story release from patient or legal representative</label>
               <label class="check-item"><input type="checkbox" id="rel2"> HIPAA authorization for marketing use signed</label>
               <label class="check-item"><input type="checkbox" id="rel3"> Patient/family approved to be quoted by name</label>
             </div>
@@ -1304,7 +1324,7 @@ function togglePhotoUpload(radio) {
     if (radio.value === "patient_photo") {
       const facility = document.getElementById("facilityName").value || "";
       const releaseURL = `https://mcoajoycemartin.github.io/pureprogress-forms/release_form.html?facility=${encodeURIComponent(facility)}&return=1`;
-      const go = confirm("A patient photo requires a signed Release & Authorization form.\n\nClick OK to open the release form in a new tab. Once signed, return here to continue uploading the photo.");
+      const go = confirm("A patient photo/video requires a signed Release & Authorization form.\n\nClick OK to open the release form in a new tab. Once signed, return here to continue uploading.");
       if (go) {
         const win = window.open(releaseURL, "_blank");
         // Show a reminder banner
@@ -1362,8 +1382,42 @@ function handleFileSelect(input) {
   }
 }
 
-const uploadZone = document.getElementById("uploadZone");
-uploadZone.addEventListener("dragover", e => { e.preventDefault(); uploadZone.classList.add("dragover"); });
+// ─────────────────────────────────────────────
+// VIDEO UPLOAD HANDLER
+// ─────────────────────────────────────────────
+let uploadedVideoFile = null;
+
+function handleVideoSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const maxBytes = 500 * 1024 * 1024; // 500MB
+  if (file.size > maxBytes) {
+    document.getElementById("videoWarning").style.display = "block";
+    document.getElementById("videoPreview").style.display = "none";
+    uploadedVideoFile = null;
+    return;
+  }
+  document.getElementById("videoWarning").style.display = "none";
+  uploadedVideoFile = file;
+  const preview = document.getElementById("videoPreview");
+  document.getElementById("videoFileName").textContent = file.name;
+  document.getElementById("videoFileSize").textContent = "(" + (file.size / (1024*1024)).toFixed(1) + " MB)";
+  preview.style.display = "flex";
+}
+
+// Video drag and drop
+const videoZone = document.getElementById("videoUploadZone");
+videoZone.addEventListener("dragover", e => { e.preventDefault(); videoZone.classList.add("dragover"); });
+videoZone.addEventListener("dragleave", () => videoZone.classList.remove("dragover"));
+videoZone.addEventListener("drop", e => {
+  e.preventDefault();
+  videoZone.classList.remove("dragover");
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith("video/")) {
+    document.getElementById("videoFile").files = e.dataTransfer.files;
+    handleVideoSelect(document.getElementById("videoFile"));
+  }
+});
 uploadZone.addEventListener("dragleave", () => uploadZone.classList.remove("dragover"));
 uploadZone.addEventListener("drop", e => {
   e.preventDefault();
@@ -1447,7 +1501,9 @@ function collectData() {
     transfer_process: document.getElementById("transferProcess").value,
     facility_metric: document.getElementById("facilityMetric").value,
     photo_base64: uploadedPhotoBase64,
-    photo_mime_type: uploadedPhotoType
+    photo_mime_type: uploadedPhotoType,
+    video_filename: uploadedVideoFile ? uploadedVideoFile.name : "",
+    video_size_mb: uploadedVideoFile ? (uploadedVideoFile.size / (1024*1024)).toFixed(1) : ""
   };
 }
 
@@ -1695,6 +1751,11 @@ async function submitForm() {
       });
       result.then(() => console.log("Apps Script fetch completed"))
             .catch(err => console.error("Apps Script fetch error:", err));
+
+      // If video attached — send separately as base64 chunks
+      if (uploadedVideoFile) {
+        uploadVideoToAppsScript(uploadedVideoFile, _lastData.facility_name, _lastData.date_submitted);
+      }
     } catch(e) {
       console.warn("Apps Script POST:", e.message);
     }
@@ -1742,6 +1803,35 @@ function resetForm() {
   document.querySelectorAll(".tag-item.checked").forEach(el => el.classList.remove("checked"));
   document.getElementById("progressFill").style.width = "0%";
   window.scrollTo(0, 0);
+}
+
+// ─────────────────────────────────────────────
+// VIDEO UPLOAD TO GOOGLE DRIVE VIA APPS SCRIPT
+// Reads video as base64 and sends to Apps Script
+// which saves it to the PUREcovery Story Videos folder
+// ─────────────────────────────────────────────
+function uploadVideoToAppsScript(file, facilityName, dateSubmitted) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result.split(",")[1];
+    const payload = {
+      action:        "upload_video",
+      video_base64:  base64,
+      video_name:    file.name,
+      video_type:    file.type || "video/mp4",
+      facility_name: facilityName || "Unknown",
+      date_submitted: dateSubmitted || new Date().toISOString().slice(0,10)
+    };
+    console.log("Uploading video to Drive, size:", (base64.length / 1024).toFixed(0), "KB base64");
+    fetch(GOOGLE_SHEET_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(() => console.log("Video upload sent"))
+      .catch(err => console.error("Video upload error:", err));
+  };
+  reader.readAsDataURL(file);
 }
 
 // ─────────────────────────────────────────────
