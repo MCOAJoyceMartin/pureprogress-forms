@@ -932,10 +932,9 @@
   <div id="successScreen" class="success-screen">
     <div class="success-icon">✓</div>
     <h2>Story submitted successfully!</h2>
-    <p>Your submission has been recorded. The story PDF has been emailed to the team and the Delivering PUREcovery flyer is opening now.</p>
+    <p>Your submission has been recorded and the marketing team has been notified. A PDF copy is printing for your records.</p>
     <p style="font-size:12px;color:var(--text3);margin-bottom:20px;">
-      Story PDF sent to: stacy@mcoa.health · abby@mcoa.health · joey@mcoa.health · joyce@mcoa.health<br>
-      Delivering PUREcovery flyer sent to: abby@mcoa.health · joey@mcoa.health
+      Story PDF sent to: stacy@mcoa.health · abby@mcoa.health · joey@mcoa.health · joyce@purehlth.com
     </p>
 
     <!-- RELEASE FORM PROMPT -->
@@ -950,7 +949,6 @@
 
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
       <button class="btn btn-primary" id="downloadPDFBtn" type="button">⬇ Download PDF Again</button>
-      <button class="btn btn-primary" id="openFlyerBtn" type="button" style="background:var(--accent);">📰 Open Delivering PUREcovery</button>
       <button class="btn btn-secondary" type="button" onclick="resetForm()">Submit Another Story</button>
     </div>
   </div>
@@ -959,7 +957,7 @@
 
 <div class="submit-bar">
   <div class="submit-info">
-    <b>Submit by the 15th</b> · stacy@mcoa.health · abby@mcoa.health · joey@mcoa.health · joyce@mcoa.health
+    <b>Submit by the 15th</b> · stacy@mcoa.health · abby@mcoa.health · joey@mcoa.health · joyce@purehlth.com
   </div>
   <div style="display:flex;gap:10px;align-items:center;">
     <div class="loading-indicator" id="submitLoader">
@@ -981,7 +979,7 @@ const EMPLOYEES_CSV_URL  = "https://raw.githubusercontent.com/MCOAJoyceMartin/pu
 const FACILITIES_CSV_URL = "https://raw.githubusercontent.com/MCOAJoyceMartin/pureprogress-forms/refs/heads/main/facilities.csv";
 
 // Google Apps Script URL for form submissions → Google Sheet → Power BI
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyDWzmKgRqwLp5733FNMEVOVp6wAe8CH2O6mJtu5bKoTMriKlSidPIA2h5OIYweW-wa_Q/exec";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwwlWYHF0lTpj1QuJnVLKuY95SpuXuwXXWMKyG8-pYr9KpojUxPW29r9MvTQoOWz35AOQ/exec";
 
 const ADMISSIONS_ROLES = [
   "Admissions Coordinator",
@@ -1460,7 +1458,7 @@ const SUBMISSION_RECIPIENTS = [
   "stacy@mcoa.health",
   "abby@mcoa.health",
   "joey@mcoa.health",
-  "joyce@mcoa.health"
+  "joyce@purehlth.com"
 ];
 
 // ─────────────────────────────────────────────
@@ -1637,12 +1635,17 @@ async function submitForm() {
   const data = collectData();
   const pdfHtml = buildPDFContent(data);
 
-  // Build Delivering PUREcovery flyer URL to include in email to Abby & Joey
+  // Build Delivering PUREcovery flyer URL
   let flyerURL = "";
   try {
-    const encoded = btoa(JSON.stringify(data));
-    flyerURL = `https://mcoajoycemartin.github.io/pureprogress-forms/delivering.html?story=${encoded}`;
-  } catch(e) {}
+    const logo = document.querySelector(".page-header img");
+    const dataWithLogo = { ...data, _logo: logo ? logo.src : "" };
+    // Re-store with logo
+    sessionStorage.setItem("purecovery_story", JSON.stringify(dataWithLogo));
+    flyerURL = buildFlyerURL(dataWithLogo);
+  } catch(e) {
+    flyerURL = buildFlyerURL(data);
+  }
 
   // Step 1 — post to Apps Script
   // Apps Script sends story PDF to all 4 recipients
@@ -1675,13 +1678,8 @@ async function submitForm() {
   document.getElementById("successScreen").classList.add("show");
   window.scrollTo(0, 0);
 
-  // Step 3 — print dialog for surveyor's own PDF copy
+  // Step 3 — print dialog for surveyor's own PDF copy only
   setTimeout(() => generateAndDownloadPDF(data), 500);
-
-  // Step 4 — open Delivering PUREcovery flyer
-  setTimeout(() => {
-    if (flyerURL) window.open(flyerURL, "_blank");
-  }, 1500);
 }
 
 function saveDraft() {
@@ -1755,14 +1753,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   let _lastData = null;
 
-  function buildSocialURL(data) {
+  function buildFlyerURL(data) {
     try {
-      // Include logo in story data
-      const logo = document.querySelector(".page-header img");
-      const storyWithLogo = { ...data, _logo: logo ? logo.src : "" };
-      const encoded = btoa(JSON.stringify(storyWithLogo));
-      return `https://mcoajoycemartin.github.io/pureprogress-forms/social_review.html?story=${encoded}`;
-    } catch(e) { return "https://mcoajoycemartin.github.io/pureprogress-forms/social_review.html"; }
+      // Store full data in sessionStorage to avoid URL length limits
+      // (base64 photos make URLs too long for browsers)
+      sessionStorage.setItem("purecovery_story", JSON.stringify(data));
+      return "https://mcoajoycemartin.github.io/pureprogress-forms/delivering.html?from=session";
+    } catch(e) {
+      // Fallback: strip photo and use URL param
+      const slim = { ...data, photo_base64: "", photo_mime_type: "" };
+      try {
+        const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(slim))));
+        return `https://mcoajoycemartin.github.io/pureprogress-forms/delivering.html?story=${encoded}`;
+      } catch(e2) {
+        return "https://mcoajoycemartin.github.io/pureprogress-forms/delivering.html";
+      }
+    }
   }
 
   document.getElementById("openSocialBtn")?.addEventListener("click", () => {
@@ -1781,15 +1787,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("downloadPDFBtn")?.addEventListener("click", () => {
     if (_lastData) generateAndDownloadPDF(_lastData);
-  });
-
-  document.getElementById("openFlyerBtn")?.addEventListener("click", () => {
-    if (_lastData) {
-      try {
-        const encoded = btoa(JSON.stringify(_lastData));
-        window.open(`https://mcoajoycemartin.github.io/pureprogress-forms/delivering.html?story=${encoded}`, "_blank");
-      } catch(e) {}
-    }
   });
 
   // Patch submitForm to cache last submission data BEFORE submitting
