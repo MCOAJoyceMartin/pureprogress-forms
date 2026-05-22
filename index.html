@@ -1774,20 +1774,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  document.getElementById("openSocialBtn")?.addEventListener("click", () => {
-    if (_lastData) window.open(buildSocialURL(_lastData), "_blank");
-  });
-
-  document.getElementById("copySocialLinkBtn")?.addEventListener("click", () => {
-    if (_lastData) {
-      navigator.clipboard.writeText(buildSocialURL(_lastData)).then(() => {
-        const btn = document.getElementById("copySocialLinkBtn");
-        btn.textContent = "✓ Link Copied!";
-        setTimeout(() => btn.textContent = "🔗 Copy Review Link", 2000);
-      });
-    }
-  });
-
   document.getElementById("downloadPDFBtn")?.addEventListener("click", () => {
     if (_lastData) generateAndDownloadPDF(_lastData);
   });
