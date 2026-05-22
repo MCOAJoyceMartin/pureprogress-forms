@@ -1461,6 +1461,9 @@ const SUBMISSION_RECIPIENTS = [
   "joyce@purehlth.com"
 ];
 
+// _lastData declared at top level so submitForm can access it
+let _lastData = null;
+
 // ─────────────────────────────────────────────
 // PDF GENERATION
 // ─────────────────────────────────────────────
@@ -1632,54 +1635,55 @@ async function submitForm() {
   const loader = document.getElementById("submitLoader");
   loader.classList.add("show");
 
-  const data = collectData();
-  const pdfHtml = buildPDFContent(data);
+  _lastData = collectData();
+  const pdfHtml = buildPDFContent(_lastData);
 
-  // Build Delivering PUREcovery flyer URL
+  // Build flyer URL
   let flyerURL = "";
   try {
     const logo = document.querySelector(".page-header img");
-    const dataWithLogo = { ...data, _logo: logo ? logo.src : "" };
-    // Re-store with logo
+    const dataWithLogo = { ..._lastData, _logo: logo ? logo.src : "" };
     sessionStorage.setItem("purecovery_story", JSON.stringify(dataWithLogo));
     flyerURL = buildFlyerURL(dataWithLogo);
   } catch(e) {
-    flyerURL = buildFlyerURL(data);
+    flyerURL = "https://mcoajoycemartin.github.io/pureprogress-forms/delivering.html";
   }
 
-  // Step 1 — post to Apps Script
-  // Apps Script sends story PDF to all 4 recipients
-  // and flyer link + PDF to Abby & Joey only
+  // Post to Apps Script with 10s timeout
   if (!GOOGLE_SHEET_URL.startsWith("YOUR_")) {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
       await fetch(GOOGLE_SHEET_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
-          ...data,
+          ..._lastData,
           pdf_html:  pdfHtml,
           flyer_url: flyerURL,
-          flyer_recipients: ["abby@mcoa.health", "joey@mcoa.health"]
+          flyer_recipients: ["stacy@mcoa.health","abby@mcoa.health","joey@mcoa.health","joyce@purehlth.com"]
         })
       });
+      clearTimeout(timeoutId);
     } catch(e) {
-      console.warn("Apps Script POST failed:", e.message);
-      openEmailNotification(data);
+      console.warn("Apps Script POST:", e.message);
+      // Continue anyway — don't block the user
     }
   } else {
-    openEmailNotification(data);
+    openEmailNotification(_lastData);
   }
 
   loader.classList.remove("show");
 
-  // Step 2 — show success screen
+  // Show success
   document.getElementById("mainForm").style.display = "none";
   document.getElementById("successScreen").classList.add("show");
   window.scrollTo(0, 0);
 
-  // Step 3 — print dialog for surveyor's own PDF copy only
-  setTimeout(() => generateAndDownloadPDF(data), 500);
+  // Print dialog for surveyor's PDF
+  setTimeout(() => generateAndDownloadPDF(_lastData), 500);
 }
 
 function saveDraft() {
@@ -1751,7 +1755,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
-  let _lastData = null;
 
   function buildFlyerURL(data) {
     try {
@@ -1788,13 +1791,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("downloadPDFBtn")?.addEventListener("click", () => {
     if (_lastData) generateAndDownloadPDF(_lastData);
   });
-
-  // Patch submitForm to cache last submission data BEFORE submitting
-  const _origSubmit = window.submitForm;
-  window.submitForm = async function() {
-    _lastData = collectData();
-    await _origSubmit.call(this);
-  };
 });
 </script>
 </body>
