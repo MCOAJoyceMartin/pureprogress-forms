@@ -23,9 +23,9 @@
     --radius: 10px;
     --radius-sm: 6px;
   }
-
+ 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
   body {
     font-family: 'DM Sans', sans-serif;
     background: #EEF2F7;
@@ -34,7 +34,7 @@
     line-height: 1.6;
     min-height: 100vh;
   }
-
+ 
   .page-header {
     background: var(--brand);
     color: white;
@@ -46,9 +46,9 @@
   .page-header img { height: 48px; width: auto; background: white; border-radius: 6px; padding: 4px; }
   .page-header h1 { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; }
   .page-header p { font-size: 12px; opacity: 0.7; margin-top: 2px; }
-
+ 
   .container { max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; }
-
+ 
   .doc-card {
     background: var(--surface);
     border-radius: var(--radius);
@@ -56,7 +56,7 @@
     overflow: hidden;
     margin-bottom: 20px;
   }
-
+ 
   .doc-header {
     text-align: center;
     padding: 28px 40px 20px;
@@ -70,9 +70,9 @@
     margin-bottom: 4px;
   }
   .doc-header p { font-size: 13px; color: var(--text3); }
-
+ 
   .doc-body { padding: 32px 40px; }
-
+ 
   .release-text {
     font-size: 13.5px;
     line-height: 1.85;
@@ -80,7 +80,7 @@
     margin-bottom: 24px;
   }
   .release-text p { margin-bottom: 14px; }
-
+ 
   .inline-field {
     display: inline-block;
     border-bottom: 1.5px solid var(--brand);
@@ -97,7 +97,7 @@
     font-style: italic;
     font-weight: 400;
   }
-
+ 
   /* ── FORM FIELDS ── */
   .field-section {
     background: var(--surface2);
@@ -142,7 +142,7 @@
     border-color: var(--brand);
     box-shadow: 0 0 0 3px rgba(29,95,138,0.1);
   }
-
+ 
   /* ── SIGNATURE CANVAS ── */
   .sig-section {
     background: var(--surface2);
@@ -160,7 +160,7 @@
     margin-bottom: 6px;
   }
   .sig-hint { font-size: 12px; color: var(--text3); margin-bottom: 12px; font-style: italic; }
-
+ 
   .sig-wrap {
     position: relative;
     border: 2px solid var(--border);
@@ -206,7 +206,7 @@
     color: var(--text3);
     pointer-events: none;
   }
-
+ 
   .sig-actions {
     display: flex;
     justify-content: flex-end;
@@ -224,7 +224,7 @@
     transition: all 0.12s;
   }
   .btn-clear:hover { background: var(--danger-light); color: var(--danger); border-color: var(--danger); }
-
+ 
   /* ── SUBMIT ── */
   .submit-bar {
     position: fixed;
@@ -257,10 +257,10 @@
   .btn-primary:hover { background: #185FA5; }
   .btn-primary:active { transform: scale(0.98); }
   .btn-primary:disabled { opacity: 0.5; pointer-events: none; }
-
+ 
   .spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
+ 
   /* ── SUCCESS ── */
   .success-screen {
     display: none;
@@ -274,7 +274,7 @@
   .success-icon { font-size: 48px; color: var(--accent); margin-bottom: 16px; }
   .success-screen h2 { font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400; color: var(--brand); margin-bottom: 10px; }
   .success-screen p { color: var(--text2); max-width: 400px; margin: 0 auto 20px; }
-
+ 
   .error-msg {
     display: none;
     background: var(--danger-light);
@@ -286,7 +286,7 @@
     margin-bottom: 16px;
   }
   .error-msg.show { display: block; }
-
+ 
   @media (max-width: 600px) {
     .doc-body { padding: 20px; }
     .field-row { grid-template-columns: 1fr; }
@@ -295,7 +295,7 @@
 </style>
 </head>
 <body>
-
+ 
 <div class="page-header">
   <img id="headerLogo" src="data:image/png;base64,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" alt="PureHealth">
   <div>
@@ -303,11 +303,11 @@
     <p>PUREcovery · PUREparency · PUREformance</p>
   </div>
 </div>
-
+ 
 <div class="container">
-
+ 
   <div id="mainForm">
-
+ 
     <!-- PATIENT INFO -->
     <div class="doc-card">
       <div class="doc-header">
@@ -315,7 +315,7 @@
         <p>Please complete all fields and sign below. This form is required before any photos or videos may be published.</p>
       </div>
       <div class="doc-body">
-
+ 
         <!-- Patient fields -->
         <div class="field-section">
           <h3>Patient / Signer Information</h3>
@@ -354,7 +354,7 @@
             </div>
           </div>
         </div>
-
+ 
         <!-- Release document text -->
         <div class="release-text" id="releaseText">
           <p>
@@ -397,7 +397,7 @@
             will not conflict with any other agreement to which I am bound.
           </p>
         </div>
-
+ 
         <!-- SIGNATURE -->
         <div class="sig-section">
           <h3>Signature <span style="color:var(--danger);">*</span></h3>
@@ -412,7 +412,7 @@
             <button class="btn-clear" onclick="clearSignature()">✕ Clear Signature</button>
           </div>
         </div>
-
+ 
         <!-- DATE SIGNED -->
         <div class="field-section">
           <h3>Date Signed</h3>
@@ -427,50 +427,50 @@
             </div>
           </div>
         </div>
-
+ 
         <div class="error-msg" id="errorMsg">Please fill in all required fields and provide a signature before submitting.</div>
-
+ 
       </div>
     </div>
-
+ 
   </div><!-- end mainForm -->
-
+ 
   <div id="successScreen" class="success-screen">
     <div class="success-icon">✓</div>
     <h2>Release signed successfully!</h2>
     <p>Thank you. Your signed release has been recorded and sent to the PUREcovery team. A copy is being prepared for your records.</p>
     <button class="btn-primary" style="margin:0 auto;" onclick="window.print()">🖨 Print / Save PDF Copy</button>
   </div>
-
+ 
 </div>
-
+ 
 <div class="submit-bar" id="submitBar">
   <div class="submit-info">All fields and signature required to submit</div>
   <button class="btn-primary" id="submitBtn" onclick="submitRelease()">
     Submit Signed Release →
   </button>
 </div>
-
+ 
 <script>
 // ─────────────────────────────────────────────
 // CONFIG
 // ─────────────────────────────────────────────
 const RELEASE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzo-UPKxUU-imxHp2DrMCQiQZKQJrfi3g2WfA6x06Bdq7Tfm7LiaH8AXuc2Xqw1Uyh74A/exec";
-
+ 
 const RELEASE_RECIPIENTS = [
   "stacy@mcoa.health",
   "abby@mcoa.health",
   "joey@mcoa.health",
   "joyce@purehlth.com"
 ];
-
+ 
 // ─────────────────────────────────────────────
 // LOAD LOGO
 // ─────────────────────────────────────────────
 // Try to load the same logo from the intake form
 // Falls back gracefully if not available
 const LOGO_URL = "https://mcoajoycemartin.github.io/pureprogress-forms/logo.png";
-
+ 
 // ─────────────────────────────────────────────
 // PRE-FILL FACILITY FROM URL PARAMS
 // ─────────────────────────────────────────────
@@ -489,7 +489,7 @@ function loadFromURL() {
   // Set today's date
   document.getElementById("dateSigned").value = new Date().toISOString().slice(0,10);
 }
-
+ 
 // ─────────────────────────────────────────────
 // LIVE-UPDATE DOCUMENT TEXT
 // ─────────────────────────────────────────────
@@ -507,13 +507,13 @@ function updateDoc() {
     }
   });
 }
-
+ 
 // Show/hide signer name field based on relationship
 document.getElementById("signerRelationship").addEventListener("change", function() {
   const row = document.getElementById("signerNameRow");
   row.style.display = this.value === "Self" ? "none" : "grid";
 });
-
+ 
 // ─────────────────────────────────────────────
 // SIGNATURE CANVAS
 // ─────────────────────────────────────────────
@@ -522,7 +522,7 @@ const ctx     = canvas.getContext("2d");
 let drawing   = false;
 let hasSig    = false;
 let lastX = 0, lastY = 0;
-
+ 
 function resizeCanvas() {
   const rect = canvas.getBoundingClientRect();
   const dpr  = window.devicePixelRatio || 1;
@@ -534,7 +534,7 @@ function resizeCanvas() {
   ctx.lineCap     = "round";
   ctx.lineJoin    = "round";
 }
-
+ 
 function getPos(e) {
   const rect = canvas.getBoundingClientRect();
   if (e.touches) {
@@ -545,7 +545,7 @@ function getPos(e) {
   }
   return { x: e.clientX - rect.left, y: e.clientY - rect.top };
 }
-
+ 
 function startDraw(e) {
   e.preventDefault();
   drawing = true;
@@ -557,7 +557,7 @@ function startDraw(e) {
   ctx.beginPath();
   ctx.moveTo(lastX, lastY);
 }
-
+ 
 function draw(e) {
   if (!drawing) return;
   e.preventDefault();
@@ -568,11 +568,11 @@ function draw(e) {
   ctx.stroke();
   lastX = pos.x; lastY = pos.y;
 }
-
+ 
 function endDraw(e) {
   drawing = false;
 }
-
+ 
 function clearSignature() {
   const dpr = window.devicePixelRatio || 1;
   ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
@@ -580,7 +580,7 @@ function clearSignature() {
   document.getElementById("sigPlaceholder").style.opacity = "1";
   document.getElementById("sigWrap").classList.remove("active");
 }
-
+ 
 canvas.addEventListener("mousedown",  startDraw, { passive: false });
 canvas.addEventListener("mousemove",  draw,      { passive: false });
 canvas.addEventListener("mouseup",    endDraw);
@@ -588,9 +588,9 @@ canvas.addEventListener("mouseleave", endDraw);
 canvas.addEventListener("touchstart", startDraw, { passive: false });
 canvas.addEventListener("touchmove",  draw,      { passive: false });
 canvas.addEventListener("touchend",   endDraw);
-
+ 
 window.addEventListener("resize", resizeCanvas);
-
+ 
 // ─────────────────────────────────────────────
 // VALIDATION
 // ─────────────────────────────────────────────
@@ -607,7 +607,7 @@ function validate() {
   if (!hasSig) return false;
   return true;
 }
-
+ 
 // ─────────────────────────────────────────────
 // BUILD PDF HTML
 // ─────────────────────────────────────────────
@@ -668,7 +668,7 @@ function buildReleasePDF(data) {
   <div class="footer">Signed electronically via PUREcovery Digital Release Form · ${new Date().toLocaleString()}</div>
   </body></html>`;
 }
-
+ 
 // ─────────────────────────────────────────────
 // SUBMIT
 // ─────────────────────────────────────────────
@@ -680,11 +680,11 @@ async function submitRelease() {
     return;
   }
   errEl.classList.remove("show");
-
+ 
   const btn = document.getElementById("submitBtn");
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner"></div> Submitting…';
-
+ 
   const rel = document.getElementById("signerRelationship").value;
   const data = {
     timestamp:           new Date().toISOString(),
@@ -700,29 +700,42 @@ async function submitRelease() {
     signature_data:      canvas.toDataURL("image/png"),
     form_type:           "release_authorization"
   };
-
+ 
   const pdfHtml = buildReleasePDF(data);
-
+ 
   // Post to Apps Script — fire and forget
+  // Apps Script saves to sheet AND emails signed PDF to all 4
   if (!RELEASE_SHEET_URL.startsWith("YOUR_")) {
     try {
       fetch(RELEASE_SHEET_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, pdf_html: pdfHtml, form_type: "release_authorization" })
+        body: JSON.stringify({
+          ...data,
+          pdf_html:   pdfHtml,
+          form_type:  "release_authorization",
+          // Tell Apps Script to email the signed release PDF
+          send_release_email: true,
+          release_recipients: [
+            "stacy@mcoa.health",
+            "abby@mcoa.health",
+            "joey@mcoa.health",
+            "joyce@purehlth.com"
+          ]
+        })
       });
     } catch(e) { console.warn("Release submission:", e.message); }
   }
-
+ 
   btn.disabled = false;
   btn.innerHTML = "Submit Signed Release →";
-
+ 
   // Show success
   document.getElementById("mainForm").style.display = "none";
   document.getElementById("submitBar").style.display = "none";
   document.getElementById("successScreen").classList.add("show");
-
+ 
   // Open print dialog for patient's copy
   setTimeout(() => {
     const blob = new Blob([pdfHtml], { type: "text/html" });
@@ -731,7 +744,7 @@ async function submitRelease() {
     if (win) win.onload = () => setTimeout(() => { win.print(); URL.revokeObjectURL(url); }, 500);
   }, 600);
 }
-
+ 
 // ─────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────
