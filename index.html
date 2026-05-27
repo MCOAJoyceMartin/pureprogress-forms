@@ -1364,6 +1364,7 @@ function updateChar(textarea, countId) {
 // ─────────────────────────────────────────────
 let uploadedPhotoBase64 = "";
 let uploadedPhotoType   = "";
+let photoCompressionPromise = null;
 
 function compressPhoto(file, maxWidthPx, qualityVal, callback) {
   const img    = new Image();
@@ -1390,12 +1391,18 @@ function handleFileSelect(input) {
     const preview = document.getElementById("uploadPreview");
     document.getElementById("uploadFileName").textContent = file.name + " (" + (file.size / 1024).toFixed(0) + " KB)";
     preview.classList.add("show");
-    // Compress to max 800px wide, 70% quality — keeps PDF size manageable
-    compressPhoto(file, 800, 0.70, (base64, mimeType) => {
-      uploadedPhotoBase64 = base64;
-      uploadedPhotoType   = mimeType;
-      const compressedKB  = Math.round(base64.length * 0.75 / 1024);
-      console.log("Photo compressed to ~" + compressedKB + " KB");
+    // Reset before compressing
+    uploadedPhotoBase64 = "";
+    uploadedPhotoType   = "";
+    // Create a promise that resolves when compression is done
+    photoCompressionPromise = new Promise(resolve => {
+      compressPhoto(file, 800, 0.70, (base64, mimeType) => {
+        uploadedPhotoBase64 = base64;
+        uploadedPhotoType   = mimeType;
+        const compressedKB  = Math.round(base64.length * 0.75 / 1024);
+        console.log("Photo compressed to ~" + compressedKB + " KB");
+        resolve();
+      });
     });
   }
 }
@@ -1652,6 +1659,13 @@ function generateAndDownloadPDF(data) {
   const html = buildPDFContent(data);
   const blob = new Blob([html], { type: "text/html" });
   const url  = URL.createObjectURL(blob);
+  // Build filename with patient name
+  const fname    = (data.facility_name || "submission").replace(/\s+/g,"_");
+  const patient  = (data.quote_attr_name || data.therapist_name || "").replace(/\s+/g,"_");
+  const datePart = data.date_submitted || new Date().toISOString().slice(0,10);
+  const filename = patient
+    ? `PUREcovery_${fname}_${patient}_${datePart}`
+    : `PUREcovery_${fname}_${datePart}`;
   const win  = window.open(url, "_blank");
   if (win) {
     win.onload = () => {
@@ -1661,11 +1675,9 @@ function generateAndDownloadPDF(data) {
       }, 600);
     };
   } else {
-    // Fallback: direct download of HTML (user can print-to-PDF)
     const a = document.createElement("a");
     a.href = url;
-    const fname = (data.facility_name || "submission").replace(/\s+/g,"_");
-    a.download = `PureProgress_${fname}_${data.date_submitted || "form"}.html`;
+    a.download = `${filename}.html`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
   }
@@ -1710,13 +1722,9 @@ async function submitForm() {
   loader.classList.add("show");
 
   // Wait for photo compression to finish if a photo was selected
-  if (document.getElementById("photoFile").files[0] && !uploadedPhotoBase64) {
-    await new Promise(resolve => {
-      const checkInterval = setInterval(() => {
-        if (uploadedPhotoBase64) { clearInterval(checkInterval); resolve(); }
-      }, 100);
-      setTimeout(() => { clearInterval(checkInterval); resolve(); }, 5000); // 5s max wait
-    });
+  if (photoCompressionPromise) {
+    await photoCompressionPromise;
+    console.log("Photo ready, base64 length:", uploadedPhotoBase64.length);
   }
 
   _lastData = collectData();
