@@ -161,14 +161,6 @@
     transition: border-color 0.15s, box-shadow 0.15s;
     appearance: none;
     -webkit-appearance: none;
-    spellcheck: true;
-    autocorrect: on;
-    autocapitalize: sentences;
-  }
-  textarea {
-    spellcheck: true;
-    autocorrect: on;
-    autocapitalize: sentences;
   }
   input:focus, select:focus, textarea:focus {
     border-color: var(--brand);
@@ -548,7 +540,7 @@
           <div class="field-group">
             <label for="submittedBySearch">Submitted By — Name <span class="req">*</span></label>
             <div class="search-wrap">
-              <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="submittedBySearch" placeholder="Search employee name…" autocomplete="off" disabled>
+              <input type="text" id="submittedBySearch" placeholder="Search employee name…" autocomplete="off" disabled>
               <span class="search-icon">⌕</span>
               <div class="autocomplete-list" id="submittedByList"></div>
             </div>
@@ -556,7 +548,7 @@
           </div>
           <div class="field-group">
             <label for="submittedByRole">Role / Job Title</label>
-            <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="submittedByRole" placeholder="Auto-filled from roster" disabled>
+            <input type="text" id="submittedByRole" placeholder="Auto-filled from roster" disabled>
           </div>
         </div>
 
@@ -599,16 +591,8 @@
 
         <div class="field-row single">
           <div class="field-group">
-            <label for="patientFullName">Patient Full Name <span class="req">*</span></label>
-            <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="patientFullName" placeholder="First and last name">
-            <span class="hint">Used for internal records only — not published without consent.</span>
-          </div>
-        </div>
-
-        <div class="field-row single">
-          <div class="field-group">
             <label for="q1Hook">Q1 — What made this case stand out? (The Hook) <span class="req">*</span></label>
-            <textarea spellcheck="true" autocorrect="on" autocapitalize="sentences" id="q1Hook" rows="4" maxlength="600" placeholder="What was unusual, moving, or unexpected? 2–4 sentences." oninput="updateChar(this,'q1Count')"></textarea>
+            <textarea id="q1Hook" rows="4" maxlength="600" placeholder="What was unusual, moving, or unexpected? 2–4 sentences." oninput="updateChar(this,'q1Count')"></textarea>
             <div class="char-count"><span id="q1Count">0</span>/600</div>
           </div>
         </div>
@@ -616,7 +600,7 @@
         <div class="field-row single">
           <div class="field-group">
             <label for="q2Diagnosis">Q2 — Diagnosis or Condition Treated <span class="req">*</span></label>
-            <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="q2Diagnosis" placeholder="Plain language OK, note severity if relevant">
+            <input type="text" id="q2Diagnosis" placeholder="Plain language OK, note severity if relevant">
           </div>
         </div>
 
@@ -624,7 +608,7 @@
 
         <div class="field-row three">
           <div class="field-group">
-            <label for="lengthOfStay">Length of Stay (days) <span class="req">*</span></label>
+            <label for="lengthOfStay">Length of Stay (days)</label>
             <input type="number" id="lengthOfStay" min="1" placeholder="e.g. 21">
           </div>
           <div class="field-group" style="grid-column: span 2;">
@@ -644,7 +628,7 @@
               <option value="Other">Other (specify below)</option>
             </select>
             <div class="other-specify" id="dischargeOther">
-              <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="dischargeOtherVal" placeholder="Please specify discharge destination">
+              <input type="text" id="dischargeOtherVal" placeholder="Please specify discharge destination">
             </div>
           </div>
         </div>
@@ -652,7 +636,7 @@
         <div class="field-row single">
           <div class="field-group">
             <label for="functionalGains">Functional Gains Made <span class="req">*</span></label>
-            <textarea spellcheck="true" autocorrect="on" autocapitalize="sentences" id="functionalGains" rows="3" maxlength="500" placeholder="Specifics sell! e.g. walked 200 ft with walker (was bed-bound on admit), regained ability to feed self." oninput="updateChar(this,'gainsCount')"></textarea>
+            <textarea id="functionalGains" rows="3" maxlength="500" placeholder="Specifics sell! e.g. walked 200 ft with walker (was bed-bound on admit), regained ability to feed self." oninput="updateChar(this,'gainsCount')"></textarea>
             <div class="char-count"><span id="gainsCount">0</span>/500</div>
           </div>
         </div>
@@ -662,14 +646,14 @@
         <div class="field-row single">
           <div class="field-group">
             <label for="q4Quote">Q4 — Quote (patient, family, or therapist) <span class="req">*</span></label>
-            <textarea spellcheck="true" autocorrect="on" autocapitalize="sentences" id="q4Quote" rows="3" placeholder="Capture it in their actual words — don't polish it." maxlength="400" oninput="updateChar(this,'quoteCount')"></textarea>
+            <textarea id="q4Quote" rows="3" placeholder="Capture it in their actual words — don't polish it." maxlength="400" oninput="updateChar(this,'quoteCount')"></textarea>
             <div class="char-count"><span id="quoteCount">0</span>/400</div>
           </div>
         </div>
 
         <div class="field-row">
           <div class="field-group">
-            <label>Quote Attributed To <span class="req">*</span></label>
+            <label>Quote Attributed To</label>
             <div class="radio-group horizontal">
               <label class="radio-item">
                 <input type="radio" name="quoteSource" value="patient" onchange="toggleQuoteSource(this)"> Patient
@@ -686,12 +670,11 @@
               <div class="field-row">
                 <div class="field-group">
                   <label for="quoteAttrName">Name</label>
-                  <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="quoteAttrName" placeholder="First and last name">
-                  <span class="hint">Auto-filled from Patient Full Name — edit if needed</span>
+                  <input type="text" id="quoteAttrName" placeholder="First and last name">
                 </div>
                 <div class="field-group">
                   <label for="quoteRelationship">Relationship</label>
-                  <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="quoteRelationship" placeholder="e.g. Daughter, Spouse">
+                  <input type="text" id="quoteRelationship" placeholder="e.g. Daughter, Spouse">
                 </div>
               </div>
             </div>
@@ -701,7 +684,7 @@
                 <div class="field-group">
                   <label for="therapistSearch">Therapist Name</label>
                   <div class="search-wrap">
-                    <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="therapistSearch" placeholder="Search therapist…" autocomplete="off" disabled>
+                    <input type="text" id="therapistSearch" placeholder="Search therapist…" autocomplete="off" disabled>
                     <span class="search-icon">⌕</span>
                     <div class="autocomplete-list" id="therapistList"></div>
                   </div>
@@ -709,7 +692,7 @@
                 </div>
                 <div class="field-group">
                   <label for="therapistRole">Discipline / Role</label>
-                  <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="therapistRole" placeholder="Auto-filled from roster" disabled>
+                  <input type="text" id="therapistRole" placeholder="Auto-filled from roster" disabled>
                 </div>
               </div>
             </div>
@@ -720,8 +703,8 @@
 
         <div class="field-row single">
           <div class="field-group">
-            <label for="q5TherapyTeam">Q5 — Therapy Team Involved <span class="req">*</span></label>
-            <textarea spellcheck="true" autocorrect="on" autocapitalize="sentences" id="q5TherapyTeam" rows="2" placeholder="Names and disciplines (PT, OT, SLP). Marketing may interview one for a fuller quote."></textarea>
+            <label for="q5TherapyTeam">Q5 — Therapy Team Involved</label>
+            <textarea id="q5TherapyTeam" rows="2" placeholder="Names and disciplines (PT, OT, SLP). Marketing may interview one for a fuller quote."></textarea>
           </div>
         </div>
 
@@ -749,7 +732,7 @@
           <label class="tag-item" id="tagOtherItem"><input type="checkbox" value="other" onchange="toggleTag(this.parentElement); toggleOtherTag(this)"> Other</label>
         </div>
         <div class="other-specify" id="tagOtherSpecify" style="margin-top:10px;">
-          <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="tagOtherVal" placeholder="Describe the condition / category">
+          <input type="text" id="tagOtherVal" placeholder="Describe the condition / category">
         </div>
       </div>
     </div>
@@ -841,7 +824,7 @@
         <div class="field-row single">
           <div class="field-group">
             <label for="doNotInclude">Anything We Should NOT Include?</label>
-            <textarea spellcheck="true" autocorrect="on" autocapitalize="sentences" id="doNotInclude" rows="2" placeholder="Location, family situation, exact age, etc."></textarea>
+            <textarea id="doNotInclude" rows="2" placeholder="Location, family situation, exact age, etc."></textarea>
           </div>
         </div>
 
@@ -864,7 +847,7 @@
           <div class="field-group">
             <label for="admissionsSearch">Admissions Contact — Name <span class="req">*</span></label>
             <div class="search-wrap">
-              <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="admissionsSearch" placeholder="Search admissions staff…" autocomplete="off" disabled>
+              <input type="text" id="admissionsSearch" placeholder="Search admissions staff…" autocomplete="off" disabled>
               <span class="search-icon">⌕</span>
               <div class="autocomplete-list" id="admissionsList"></div>
             </div>
@@ -872,17 +855,17 @@
           </div>
           <div class="field-group">
             <label for="admissionsTitle">Title</label>
-            <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="admissionsTitle" placeholder="Auto-filled from roster" disabled>
+            <input type="text" id="admissionsTitle" placeholder="Auto-filled from roster" disabled>
           </div>
         </div>
 
         <div class="field-row">
           <div class="field-group">
-            <label for="admissionsPhone">Direct Phone <span class="req">*</span></label>
+            <label for="admissionsPhone">Direct Phone</label>
             <input type="tel" id="admissionsPhone" placeholder="(555) 000-0000">
           </div>
           <div class="field-group">
-            <label for="admissionsEmail">Email <span class="req">*</span></label>
+            <label for="admissionsEmail">Email</label>
             <input type="email" id="admissionsEmail" placeholder="admissions@facility.com">
           </div>
         </div>
@@ -893,18 +876,18 @@
             <input type="tel" id="afterHoursLine" placeholder="(555) 000-0000 (if different)">
           </div>
           <div class="field-group">
-            <label for="insuranceAccepted">Insurance Accepted <span class="req">*</span></label>
-            <textarea spellcheck="true" autocorrect="on" autocapitalize="sentences" id="insuranceAccepted" rows="2" placeholder="Medicare, Medicaid, Aetna, Cigna, UHC…"></textarea>
+            <label for="insuranceAccepted">Insurance Accepted</label>
+            <textarea id="insuranceAccepted" rows="2" placeholder="Medicare, Medicaid, Aetna, Cigna, UHC…"></textarea>
           </div>
         </div>
 
         <div class="field-row">
           <div class="field-group">
             <label for="admissionsHours">Admissions Office Hours</label>
-            <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="admissionsHours" placeholder="e.g. Mon–Fri 8am–5pm">
+            <input type="text" id="admissionsHours" placeholder="e.g. Mon–Fri 8am–5pm">
           </div>
           <div class="field-group">
-            <label for="weekendAdmissions">Accept Weekend Admissions? <span class="req">*</span></label>
+            <label for="weekendAdmissions">Accept Weekend Admissions?</label>
             <select id="weekendAdmissions">
               <option value="">— Select —</option>
               <option value="Yes">Yes</option>
@@ -916,7 +899,7 @@
 
         <div class="field-row">
           <div class="field-group">
-            <label for="afterHoursAdmissions">Accept After-Hours Admissions? <span class="req">*</span></label>
+            <label for="afterHoursAdmissions">Accept After-Hours Admissions?</label>
             <select id="afterHoursAdmissions">
               <option value="">— Select —</option>
               <option value="Yes">Yes</option>
@@ -925,7 +908,7 @@
             </select>
           </div>
           <div class="field-group">
-            <label for="responseTime">Typical Response Time to Inquiries <span class="req">*</span></label>
+            <label for="responseTime">Typical Response Time to Inquiries</label>
             <select id="responseTime">
               <option value="">— Select —</option>
               <option value="Within 1 hour">Within 1 hour</option>
@@ -939,25 +922,25 @@
 
         <div class="field-row single">
           <div class="field-group">
-            <label for="transferProcess">Transfer Process <span class="req">*</span></label>
-            <textarea spellcheck="true" autocorrect="on" autocapitalize="sentences" id="transferProcess" rows="2" placeholder="e.g. Call our admissions line. We respond to referrals within 2 hours and can typically accept transfers same-day or next-day."></textarea>
+            <label for="transferProcess">Transfer Process</label>
+            <textarea id="transferProcess" rows="2" placeholder="e.g. Call our admissions line. We respond to referrals within 2 hours and can typically accept transfers same-day or next-day."></textarea>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- SECTION 6: FACILITY METRIC -->
+    <!-- SECTION 6: OPTIONAL METRIC -->
     <div class="section-card">
       <div class="section-header">
         <div class="section-number">6</div>
-        <div class="section-title">Facility Metric</div>
+        <div class="section-title">Optional — Facility Metric</div>
       </div>
       <div class="section-body">
         <div class="field-row single">
           <div class="field-group">
-            <label for="facilityMetric">Recent Credibility Stat <span class="req">*</span></label>
-            <input type="text" spellcheck="true" autocorrect="on" autocapitalize="sentences" id="facilityMetric" placeholder='e.g. "Arlington discharged 55 residents home this quarter"'>
+            <label for="facilityMetric">Recent Credibility Stat (optional)</label>
+            <input type="text" id="facilityMetric" placeholder='e.g. "Arlington discharged 55 residents home this quarter"'>
             <span class="hint">We'll feature one stat alongside the story.</span>
           </div>
         </div>
@@ -1016,7 +999,7 @@ const EMPLOYEES_CSV_URL  = "https://raw.githubusercontent.com/MCOAJoyceMartin/pu
 const FACILITIES_CSV_URL = "https://raw.githubusercontent.com/MCOAJoyceMartin/pureprogress-forms/refs/heads/main/facilities.csv";
 
 // Google Apps Script URL for form submissions → Google Sheet → Power BI
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwQEuQvqA8YSclfzaosnxprlNJ7UTQqPV1FE0qBWVdSBEHZB3B3glOhJDzQG9SDfgu-Rw/exec";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzo-UPKxUU-imxHp2DrMCQiQZKQJrfi3g2WfA6x06Bdq7Tfm7LiaH8AXuc2Xqw1Uyh74A/exec";
 
 const ADMISSIONS_ROLES = [
   "Admissions Coordinator",
@@ -1328,14 +1311,6 @@ function toggleQuoteSource(radio) {
   document.getElementById("quoteTherapist").classList.remove("visible");
   if (radio.value === "patient" || radio.value === "family") {
     document.getElementById("quoteManual").classList.add("visible");
-    // Auto-fill patient name from Section 2 if Patient is selected
-    if (radio.value === "patient") {
-      const patientName = document.getElementById("patientFullName").value.trim();
-      const attrNameEl  = document.getElementById("quoteAttrName");
-      if (patientName && !attrNameEl.value) {
-        attrNameEl.value = patientName;
-      }
-    }
   } else if (radio.value === "therapist") {
     document.getElementById("quoteTherapist").classList.add("visible");
   }
@@ -1345,23 +1320,16 @@ function togglePhotoUpload(radio) {
   const block = document.getElementById("photoUploadBlock");
   if (radio.value === "patient_photo" || radio.value === "team_photo") {
     block.classList.add("visible");
+    // If patient photo — prompt for release form
     if (radio.value === "patient_photo") {
-      const facility   = document.getElementById("facilityName").value || "";
+      const facility = document.getElementById("facilityName").value || "";
       const releaseURL = `https://mcoajoycemartin.github.io/pureprogress-forms/release_form.html?facility=${encodeURIComponent(facility)}&return=1`;
-      // Show inline banner with direct link — avoids browser popup blocker
-      const banner = document.getElementById("releaseReminderBanner");
-      banner.style.display = "flex";
-      // Update the banner to include a direct clickable link
-      banner.innerHTML = `
-        <span>⚠ A patient photo/video requires a signed Release & Authorization form.</span>
-        <a href="${releaseURL}" target="_blank"
-           style="margin-left:8px;background:var(--brand);color:white;padding:5px 12px;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;flex-shrink:0;">
-          Open Release Form →
-        </a>
-        <label style="display:flex;align-items:center;gap:6px;margin-left:8px;white-space:nowrap;cursor:pointer;flex-shrink:0;">
-          <input type="checkbox" id="releaseConfirmed" style="accent-color:var(--brand);width:15px;height:15px;padding:0;">
-          <span style="font-weight:600;color:var(--accent);">Release signed ✓</span>
-        </label>`;
+      const go = confirm("A patient photo/video requires a signed Release & Authorization form.\n\nClick OK to open the release form in a new tab. Once signed, return here to continue uploading.");
+      if (go) {
+        const win = window.open(releaseURL, "_blank");
+        // Show a reminder banner
+        document.getElementById("releaseReminderBanner").style.display = "flex";
+      }
     }
   } else {
     block.classList.remove("visible");
@@ -1524,7 +1492,6 @@ function collectData() {
     date_submitted: document.getElementById("dateSubmitted").value,
     submitted_by_name: document.getElementById("submittedBySearch").value,
     submitted_by_role: document.getElementById("submittedByRole").value,
-    patient_full_name: document.getElementById("patientFullName").value,
     contact_method: contactMethod ? contactMethod.value : "",
     contact_phone: document.getElementById("contactPhoneVal").value,
     contact_email: document.getElementById("contactEmailVal").value,
@@ -1627,17 +1594,6 @@ function buildPDFContent(data) {
       <div>Facility: ${data.facility_name || "—"}</div>
     </div>
   </div>
-  ${data.patient_full_name ? `
-  <div style="background:#1D5F8A;color:white;padding:14px 20px;border-radius:6px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;">
-    <div>
-      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;opacity:0.75;margin-bottom:3px;">Success Story</div>
-      <div style="font-size:20px;font-weight:700;font-family:'Georgia',serif;">${data.patient_full_name}</div>
-    </div>
-    <div style="font-size:11px;opacity:0.75;text-align:right;">
-      <div>${data.facility_name || ""}</div>
-      <div>${data.date_submitted || ""}</div>
-    </div>
-  </div>` : ""}
 
   ${section("1 · Submission Info", `
     ${row("Facility", data.facility_name)}
@@ -1647,7 +1603,6 @@ function buildPDFContent(data) {
   `)}
 
   ${section("2 · The Patient Story", `
-    ${row("Patient Name", data.patient_full_name)}
     ${row("Hook / What Stood Out", data.q1_hook)}
     ${row("Diagnosis / Condition", data.q2_diagnosis)}
     ${row("Length of Stay", data.length_of_stay ? data.length_of_stay + " days" : "")}
@@ -1706,7 +1661,7 @@ function generateAndDownloadPDF(data) {
   const url  = URL.createObjectURL(blob);
   // Build filename with patient name
   const fname    = (data.facility_name || "submission").replace(/\s+/g,"_");
-  const patient  = (data.patient_full_name || data.quote_attr_name || data.therapist_name || "").replace(/\s+/g,"_");
+  const patient  = (data.quote_attr_name || data.therapist_name || "").replace(/\s+/g,"_");
   const datePart = data.date_submitted || new Date().toISOString().slice(0,10);
   const filename = patient
     ? `PUREcovery_${fname}_${patient}_${datePart}`
@@ -1755,65 +1710,11 @@ function openEmailNotification(data) {
 // SUBMIT
 // ─────────────────────────────────────────────
 async function submitForm() {
-  // ── FULL VALIDATION ──
-  const errors = [];
-
-  // Section 1
-  if (!document.getElementById("facilityName").value) errors.push("Facility Name");
-  if (!document.getElementById("dateSubmitted").value) errors.push("Date Submitted");
-  if (!document.getElementById("submittedBySearch").value) errors.push("Submitted By — Name");
-  if (!document.querySelector("[name='contactMethod']:checked")) errors.push("Best Contact Method");
-
-  // Contact method conditional
-  const contactMethod = document.querySelector("[name='contactMethod']:checked");
-  if (contactMethod?.value === "phone" && !document.getElementById("contactPhoneVal").value.trim()) errors.push("Phone Number");
-  if (contactMethod?.value === "email" && !document.getElementById("contactEmailVal").value.trim()) errors.push("Email Address");
-
-  // Section 2
-  if (!document.getElementById("patientFullName").value.trim()) errors.push("Patient Full Name");
-  if (!document.getElementById("q1Hook").value.trim()) errors.push("Q1 — What made this case stand out");
-  if (!document.getElementById("q2Diagnosis").value.trim()) errors.push("Q2 — Diagnosis or Condition");
-  if (!document.getElementById("lengthOfStay").value) errors.push("Length of Stay");
-  if (!document.getElementById("dischargeDestination").value) errors.push("Discharge Destination");
-  if (document.getElementById("dischargeDestination").value === "Other" && !document.getElementById("dischargeOtherVal").value.trim()) errors.push("Discharge Destination — Please specify");
-  if (!document.getElementById("functionalGains").value.trim()) errors.push("Functional Gains");
-  if (!document.getElementById("q4Quote").value.trim()) errors.push("Q4 — Quote");
-  if (!document.querySelector("[name='quoteSource']:checked")) errors.push("Quote Attributed To");
-  if (!document.getElementById("q5TherapyTeam").value.trim()) errors.push("Q5 — Therapy Team");
-
-  // Section 3 — at least one tag
-  if (!document.querySelector("#tagGrid input:checked")) errors.push("Story Tags — select at least one");
-
-  // Section 4 — photo status
-  if (!document.querySelector("[name='photoStatus']:checked")) errors.push("Photo Status — select photo/video or no media");
-
-  // If patient photo/video selected — release must be signed and confirmed
-  const photoStatus = document.querySelector("[name='photoStatus']:checked");
-  if (photoStatus?.value === "patient_photo") {
-    const releaseConfirmed = document.getElementById("releaseConfirmed");
-    if (!releaseConfirmed || !releaseConfirmed.checked) {
-      errors.push("Release Form — must be signed and confirmed before uploading a patient photo/video");
-    }
-  }
-
-  // Releases — all 3 checkboxes required
-  if (!document.getElementById("rel1").checked) errors.push("Releases: Signed photo/video & story release from patient");
-  if (!document.getElementById("rel2").checked) errors.push("Releases: HIPAA authorization signed");
-  if (!document.getElementById("rel3").checked) errors.push("Releases: Patient/family approved to be quoted");
-
-  // Section 5 — admissions
-  if (!document.getElementById("admissionsSearch").value.trim()) errors.push("Admissions Contact Name");
-  if (!document.getElementById("admissionsPhone").value.trim()) errors.push("Admissions Direct Phone");
-  if (!document.getElementById("admissionsEmail").value.trim()) errors.push("Admissions Email");
-  if (!document.getElementById("insuranceAccepted").value.trim()) errors.push("Insurance Accepted");
-  if (!document.getElementById("weekendAdmissions").value) errors.push("Accept Weekend Admissions");
-  if (!document.getElementById("afterHoursAdmissions").value) errors.push("Accept After-Hours Admissions");
-  if (!document.getElementById("responseTime").value) errors.push("Typical Response Time");
-  if (!document.getElementById("transferProcess").value.trim()) errors.push("Transfer Process");
-  if (!document.getElementById("facilityMetric").value.trim()) errors.push("Facility Metric — Recent Credibility Stat");
-
-  if (errors.length > 0) {
-    alert("Please complete the following required fields before submitting:\n\n• " + errors.join("\n• "));
+  const facility  = document.getElementById("facilityName").value;
+  const date      = document.getElementById("dateSubmitted").value;
+  const submitter = document.getElementById("submittedBySearch").value;
+  if (!facility || !date || !submitter) {
+    alert("Please fill in the required fields: Facility Name, Date Submitted, and Submitted By.");
     return;
   }
 
@@ -1956,8 +1857,7 @@ function uploadVideoToAppsScript(file, facilityName, dateSubmitted) {
       video_name:    file.name,
       video_type:    file.type || "video/mp4",
       facility_name: facilityName || "Unknown",
-      date_submitted: dateSubmitted || new Date().toISOString().slice(0,10),
-      patient_full_name: document.getElementById("patientFullName")?.value.trim() || ""
+      date_submitted: dateSubmitted || new Date().toISOString().slice(0,10)
     };
     console.log("Uploading video to Drive, size:", (base64.length / 1024).toFixed(0), "KB base64");
     fetch(GOOGLE_SHEET_URL, {
